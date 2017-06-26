@@ -13,6 +13,14 @@ const projectData = JSON.parse(fs.readFileSync('../dapp/build/contracts/Project.
 const ProjectContract = new TruffleContract(projectData);
 ProjectContract.setProvider(provider);
 
+/**
+ * GET /projects
+ * returns all projects
+ */
+router.get('/projects', function (req, res) {
+  
+});
+
 
 /**
  * POST /user/{addr}/project
@@ -20,8 +28,9 @@ ProjectContract.setProvider(provider);
  * creates a project for a ceratain user
  * returns project if successful
  */
-router.post('/user/:addr/project', function (req, res, next) {
+router.post('/user/:addr/project', function (req, res) {
   let address;
+
   return ProjectContract.new({
     from: account,
     gas: 4712388,
@@ -53,7 +62,7 @@ router.post('/user/:addr/project', function (req, res, next) {
  * funds a certain project
  * returns the current funding status of the project if succesful
  */
-router.post('/fund', function (req, res, next) {
+router.post('/fund', function (req, res) {
   return ProjectContract.at(req.body.projAddr).then(instance => {
     instance.fund({
       from: account,
@@ -82,7 +91,7 @@ router.post('/fund', function (req, res, next) {
  * removes the project and sends all the fundings back to each backer
  * returns true
  */
-router.delete('/user/:userAddr/project/:projAddr', function (req, res, next) {
+router.delete('/user/:userAddr/project/:projAddr', function (req, res) {
   ProjectContract.at(req.query.projAddr).then(instance => {
     instance.remove({
       from: account,
