@@ -80,6 +80,19 @@ function randomFund(address) {
   }).catch(err => console.error(err))
 }
 
+function withdrawProject(address) {
+  return ProjectContract.at(address).then(instance => {
+    return instance.withdraw({
+      from: account,
+      gas: 4712388,
+      gasPrice: 100000000000
+    });
+  }).then(result => {
+    console.log('project %s withdrawed', address)
+    return result
+  }).catch(err => console.error(err))
+}
+
 function remove(address) {
   return ProjectContract.at(address).then(instance => {
     return instance.remove({
@@ -93,12 +106,20 @@ function remove(address) {
   }).catch(err => console.error(err))
 }
 
-//  node cli.js create "Test title" "My description" 1000000 "2017-06-15T15:00:00"
+//  node cli.js create "Test title" "My description" 1000000 "2017-06-27T15:00:00"
 commander.command('create')
   .description('adds a new project')
   .arguments('[title] [description] [fundingGoal] [fundingEnd]')
   .action((title, description, fundingGoal, fundingEnd) => {
     createNewProject(title, description, fundingGoal, Date.parse(fundingEnd))
+  })
+
+//  node cli.js withdraw 0x....0
+commander.command('withdraw')
+  .description('withdraw a project')
+  .arguments('[address]')
+  .action(address => {
+    withdrawProject(address)
   })
 
 //  node cli.js status 0x....0
@@ -122,7 +143,7 @@ commander.command('fund')
   .description('fund a project randomly')
   .arguments('[address]')
   .action(address => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 50; i++) {
       randomFund(address)
     }
   })

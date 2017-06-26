@@ -18,6 +18,16 @@ contract Project {
 	uint fundingEnd = 0; // timestamp
 
 	Funding[] fundings;
+  
+  modifier onlyCreator() {
+    require(msg.sender == creator);
+    _;
+  }
+  
+  modifier onlyGoalReached() {
+    require(fundingAmount > fundingGoal);
+    _;
+  }
 
 	function Project() public {
 		// linking the creator to this project
@@ -33,11 +43,8 @@ contract Project {
 		fundingEnd = newFundingEnd;
 	}
 
-	function remove() public payable {
-		if (creator != msg.sender) {
-      throw;
-		}
-			
+	function remove() public payable onlyCreator {
+    			
 		for (uint i = 0; i < fundings.length; i++) {
 			Funding funding = fundings[i];
 			
@@ -78,6 +85,13 @@ contract Project {
 		fundingAmount = fundingAmount + msg.value;
 		return fundingAmount;
 	}
+  
+  function withdraw() public onlyCreator onlyGoalReached {
+    if (this.balance != fundingAmount) throw;
+    if (!creator.send(fundingAmount)){
+			throw;
+		}  
+  }
 
 	function getFundingStatus() public constant returns (string, uint, uint) {
 		var currentStatus = "Initialized";
