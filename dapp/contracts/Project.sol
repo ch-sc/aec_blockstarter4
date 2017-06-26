@@ -7,6 +7,10 @@ contract Project {
 		uint date;
 		uint fundingAmount;
 	}
+  
+  struct Share {
+    address backer;
+  }
 
 	// the creator's address
 	address creator;
@@ -16,9 +20,11 @@ contract Project {
 	uint fundingGoal = 0;
 	uint fundingStart; // timestamp
 	uint fundingEnd = 0; // timestamp
-
-	Funding[] fundings;
   
+  uint sharesNumber = 100;
+	Share[] shares;
+	Funding[] fundings;
+    
   modifier onlyCreator() {
     require(msg.sender == creator);
     _;
@@ -81,6 +87,11 @@ contract Project {
 		}
 
 		fundings.push(Funding(msg.sender, now, msg.value));
+    
+    var sharesCount = msg.value / (fundingGoal / sharesNumber);
+    for (uint i = 0; i < sharesCount && shares.length < sharesNumber; i++) {
+      shares.push(Share(msg.sender));
+    }
 		
 		fundingAmount = fundingAmount + msg.value;
 		return fundingAmount;
@@ -107,7 +118,7 @@ contract Project {
 		return (currentStatus, fundings.length, fundingAmount);
 	}
 
-	function getProjectInfo() public constant returns (address, string, string, uint, uint, uint, uint, uint) {
-		return (creator, title, description, fundingAmount, fundingGoal, fundingStart, fundingEnd, this.balance);
+	function getProjectInfo() public constant returns (address, string, string, uint, uint, uint, uint, uint, uint, uint) {
+		return (creator, title, description, fundingAmount, fundingGoal, fundingStart, fundingEnd, fundings.length, shares.length, this.balance);
 	}
 }

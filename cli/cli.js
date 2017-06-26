@@ -53,6 +53,8 @@ function getProjectInfo(address) {
     console.log('fundingGoal:', result[i++].toNumber())
     console.log('fundingStart:', result[i++].toNumber())
     console.log('fundingEnd:', result[i++].toNumber())
+    console.log('fundings count:', result[i++].toNumber())
+    console.log('shares count:', result[i++].toNumber())
     console.log('balance:', result[i++].toNumber())
     return result
   }).catch(err => {
