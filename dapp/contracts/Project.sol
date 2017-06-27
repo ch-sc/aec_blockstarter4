@@ -88,7 +88,8 @@ contract Project {
 
 		fundings.push(Funding(msg.sender, now, msg.value));
     
-    var sharesCount = msg.value / (fundingGoal / sharesNumber);
+    var sharesCount = msg.value / (fundingGoal / sharesNumber) ;
+    sharesCount = sharesCount - sharesCount % 1;
     for (uint i = 0; i < sharesCount && shares.length < sharesNumber; i++) {
       shares.push(Share(msg.sender));
     }
