@@ -8,7 +8,6 @@ var router = express.Router();
 const provider = new Web3.providers.HttpProvider('http://localhost:8545');
 const web3 = new Web3(provider);
 
-const account = web3.eth.accounts[0];
 const projectData = JSON.parse(fs.readFileSync('../dapp/build/contracts/Project.json'));
 const ProjectContract = new TruffleContract(projectData);
 ProjectContract.setProvider(provider);
@@ -18,7 +17,7 @@ ProjectContract.setProvider(provider);
  * returns all projects
  */
 router.get('/projects', function (req, res) {
-  
+
 });
 
 
@@ -29,22 +28,23 @@ router.get('/projects', function (req, res) {
  * returns project if successful
  */
 router.post('/user/:addr/project', function (req, res) {
-  let address;
+  let userAddr = req.params.addr;
+  let projAddr;
 
   return ProjectContract.new({
-    from: account,
+    from: userAddr,
     gas: 4712388,
     gasPrice: 100000000000
   }).then(instance => {
-    address = instance.address;
+    projAddr = instance.address;
     return instance.set(req.body.title, req.body.description, req.body.projectStart, req.body.projectEnd, req.body.fundingGoal, req.body.fundingStart, req.body.fundingEnd, {
-      from: account,
+      from: userAddr,
       gas: 4712388,
       gasPrice: 100000000000
     })
   }).then(result => {
-    console.log(address);
-    return ProjectContract.at(address).then(instance => {
+    console.log(projAddr);
+    return ProjectContract.at(projAddr).then(instance => {
       return instance.getProjectInfo();
     }).then(result => {
       //return project
@@ -60,20 +60,24 @@ router.post('/user/:addr/project', function (req, res) {
  * POST /fund
  * BODY: {userAddr, projAddr, funding, etc...}
  * funds a certain project
- * returns the current funding status of the project if succesful
+ * returns the current funding status of the project if successful
  */
 router.post('/fund', function (req, res) {
-  return ProjectContract.at(req.body.projAddr).then(instance => {
+  let userAddr = req.body.userAddr;
+  let projAddr = req.body.projAddr;
+  let funding = req.body.funding;
+
+  return ProjectContract.at(projAddr).then(instance => {
     instance.fund({
-      from: account,
+      from: userAddr,
       gas: 4712388,
       gasPrice: 100000000000,
-      value: req.body.funding
+      value: funding
     });
   }).then(result => {
-    const balance = web3.eth.getBalance(account).toNumber();
+    const balance = web3.eth.getBalance(userAddr).toNumber();
     console.log('Fund:', balance);
-    return ProjectContract.at(address).then(instance => {
+    return ProjectContract.at(projAddr).then(instance => {
       return instance.getFundingStatus();
     }).then(result => {
       console.log(result[0]);
@@ -92,14 +96,17 @@ router.post('/fund', function (req, res) {
  * returns true
  */
 router.delete('/user/:userAddr/project/:projAddr', function (req, res) {
-  ProjectContract.at(req.query.projAddr).then(instance => {
+  let userAddr = req.params.userAddr;
+  let projAddr = req.params.projAddr;
+
+  ProjectContract.at(projAddr).then(instance => {
     instance.remove({
-      from: account,
+      from: userAddr,
       gas: 4712388,
       gasPrice: 100000000000
     });
   }).then(result => {
-    console.log('project %s removed', address);
+    console.log('project %s removed', projAddr);
     // return true
     res.send(true);
   }).catch(err => console.error(err));

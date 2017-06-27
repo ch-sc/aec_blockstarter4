@@ -28,7 +28,7 @@ app.use('/fund', projects);
 app.use('/user/:userAddr/project/:projAddr', projects);
 
 app.use('/users', users);
-app.use('//user/:addr/projects', users);
+app.use('/user/:addr/projects', users);
 app.use('/user/:addr/funds', users);
 
 // catch 404 and forward to error handler
