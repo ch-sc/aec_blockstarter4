@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { loginUser } from '../Actions/UserActions';
 import { connect } from "react-redux";
+import { Route, HashRouter as Router, Switch, Redirect, Link } from 'react-router-dom';
+
 
 @connect(store => {
     return {};
@@ -22,9 +24,11 @@ export default class UserEntry extends React.Component {
     render() {
         return (
             <div>
-                <div>{this.props.item.name}</div>
-                {/*1st parameter of the bind function is the react event object*/}
-                <button onClick={this.selectUser.bind(this, this.props.item)}>select</button>
+              {/*1st parameter of the bind function is the react event object*/}
+              <Link to="/blockstarter" onClick={this.selectUser.bind(this, this.props.item)}>{this.props.item.name}</Link>
+                {/*<div onClick={this.selectUser.bind(this, this.props.item)}>{this.props.item.name}</div>*/}
+                
+                {/*<button onClick={this.selectUser.bind(this, this.props.item)}>select</button>*/}
             </div>
 
         );
