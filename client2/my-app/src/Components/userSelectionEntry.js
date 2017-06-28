@@ -6,6 +6,7 @@ import { Route, HashRouter as Router, Switch, Redirect, Link } from 'react-route
 @connect(store => {
     return {};
 })
+
 export default class UserEntry extends React.Component {
     constructor(props) {
         super(props);
