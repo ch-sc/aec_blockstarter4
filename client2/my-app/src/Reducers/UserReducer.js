@@ -1,4 +1,4 @@
-import { REQUEST_USERS, LOGIN_USER } from './Constants';
+import { REQUEST_USERS, LOGIN_USER } from '../Constants';
 
 export default function UserReducer(
 	state = {
@@ -26,6 +26,7 @@ export default function UserReducer(
 		case LOGIN_USER: {
 			return { ...state, isLoggedIn: action.user !== undefined, loggedIn: action.user }
 		}
+    
 	}
 
 	return state;

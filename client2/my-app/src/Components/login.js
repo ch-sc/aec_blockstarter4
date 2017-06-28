@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UserEntry from './userSelectionEntry';
 import { get } from 'axios';
 import { connect } from "react-redux";
-import { requestUsers } from '../Actions/UserActions';
+import { requestUsers } from '../Actions/Actions';
 
 @connect(store => {
     return {

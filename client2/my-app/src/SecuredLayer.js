@@ -29,7 +29,7 @@ export default class SecuredLayer extends React.Component {
     
     // ToDo: pass 'loggedInUser' to sub components
     return (
-        <Route path="/blockstarter" component={Projects} user={loggedInUser}/>
+        <Route path="/blockstarter" component={Projects}/>
     );
   }
 }
