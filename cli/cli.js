@@ -108,7 +108,7 @@ function remove(address) {
   }).catch(err => console.error(err))
 }
 
-//  node cli.js create "Test title" "My description" 1000000 "2017-06-27T15:00:00"
+//  node cli.js create "Test title" "My description" 1000000 "2017-06-30T15:00:00"
 commander.command('create')
   .description('adds a new project')
   .arguments('[title] [description] [fundingGoal] [fundingEnd]')

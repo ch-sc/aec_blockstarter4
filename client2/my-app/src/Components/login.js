@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UserEntry from './userSelectionEntry';
 import { get } from 'axios';
 import { connect } from "react-redux";
-import { requestUsers } from '../Actions/UserActions';
+import { requestUsers } from '../Actions/Actions';
 
 @connect(store => {
     return {
@@ -28,7 +28,7 @@ export default class UserList extends React.Component {
             <div>
                 Select a User:
                 {!users && <p>No users available! :(</p>}
-                {users && users.map(user => <UserEntry key={user.id} item={user} />)}
+                {users && users.map(user => <UserEntry key={user} item={user} />)}
             </div>
         );
     }

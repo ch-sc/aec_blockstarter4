@@ -1,52 +1,41 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+const express = require('express');
+const morgan = require('morgan');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
-var projects = require('./routes/projects');
-var users = require('./routes/users');
+const logger = require('./lib/logger');
 
-var app = express();
+const projects = require('./routes/projects');
+const users = require('./routes/users');
+const funds = require('./routes/funds');
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+const app = express();
+const port = process.env.PORT || 8000;
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+app.use(morgan('dev'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/projects', projects);
-app.use('/user/:addr/project', projects);
-app.use('/fund', projects);
-app.use('/user/:userAddr/project/:projAddr', projects);
-
 app.use('/users', users);
-app.use('/user/:addr/projects', users);
-app.use('/user/:addr/funds', users);
+app.use('/funds', funds);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.use(function(err, req, res) {
+  const status = err.status || 500;
+  logger.log(status >= 500 ? 'error' : 'warn', err);
+  res.status(status);
+  res.send(err);
 });
 
-module.exports = app;
+app.listen(port, () => {
+  logger.info('App listening on port %d', port)
+})
