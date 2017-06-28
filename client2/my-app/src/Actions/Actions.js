@@ -22,10 +22,11 @@ export function requestProjects() {
     };
 }
 
-export function requestOwnedProjects() {
+export function requestOwnedProjects(user) {
+    console.log('Requesting ', user.name, '\'s projects...')
     return {
         type: REQUEST_PROJECTS_OWNED,
-        payload: axios.get('https://jsonplaceholder.typicode.com/posts')
+        payload: axios.get('https://jsonplaceholder.typicode.com/posts/2/comments')
     };
 }
 

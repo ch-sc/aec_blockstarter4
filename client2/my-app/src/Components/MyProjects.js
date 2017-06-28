@@ -6,13 +6,14 @@ import { connect } from "react-redux";
 @connect(store => {
   return {
       loggedInUser: store.userReducer.loggedIn,
-      ownedProjects: store.projectsReducer.ownedProjects
+      projects: store.projectsReducer.ownedProjects,
+      isLoading: store.projectsReducer.isLoadingOwnedProjects
   }
 },{
   requestOwnedProjects
 })
 
-export default class Projects extends React.Component {
+export default class MyProjects extends React.Component {
 
   constructor(props) {
     super(props);
@@ -23,11 +24,12 @@ export default class Projects extends React.Component {
   }
 
     render() {
-      console.log('projects: ', this.props.ownedProjects)
+      console.log('My personal projects: ', this.props.projects)
 
       return(
-        <div>Projects:
-          {this.props.ownedProjects && this.props.ownedProjects.map(proj => <div key={proj.id}>{proj.title}</div>)}          
+        <div>
+          My Projects:
+          {this.props.projects && this.props.projects.map(proj => <div key={proj.id}>{proj.name}</div>)}
         </div>
       )
     }
