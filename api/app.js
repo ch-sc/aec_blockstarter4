@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const logger = require('./lib/logger');
@@ -9,9 +10,10 @@ const users = require('./routes/users');
 const funds = require('./routes/funds');
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 
 app.use(morgan('dev'));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 

@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { REQUEST_USERS, LOGIN_USER, REQUEST_PROJECTS_ALL, REQUEST_PROJECTS_OWNED, REQUEST_PROJECTS_BACKED } from '../Constants';
+import { API_ENDPOINT, REQUEST_USERS, LOGIN_USER, REQUEST_PROJECTS_ALL, REQUEST_PROJECTS_OWNED, REQUEST_PROJECTS_BACKED } from '../Constants';
 
 export function requestUsers() {
     return {
         type: REQUEST_USERS,
-        payload: axios.get('https://jsonplaceholder.typicode.com/users')
+        payload: axios.get(`${API_ENDPOINT}/users`)
     };
 }
 

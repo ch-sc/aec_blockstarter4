@@ -28,7 +28,7 @@ export default class UserList extends React.Component {
             <div>
                 Select a User:
                 {!users && <p>No users available! :(</p>}
-                {users && users.map(user => <UserEntry key={user.id} item={user} />)}
+                {users && users.map(user => <UserEntry key={user} item={user} />)}
             </div>
         );
     }
