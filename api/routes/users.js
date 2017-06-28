@@ -3,6 +3,9 @@ const fs = require('fs');
 const Web3 = require('web3');
 const TruffleContract = require('truffle-contract');
 
+const store = require('../lib/store')
+const logger = require('../lib/logger')
+
 const router = express.Router();
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545');
@@ -37,12 +40,12 @@ router.get('/:addr/projects', function (req, res) {
 
 
 /**
- * POST /users/{addr}/project
+ * POST /users/{addr}/projects
  * BODY: {title, description, etc...}
  * creates a project for a ceratain user
  * returns project if successful
  */
-router.post('/:addr/project', function (req, res,  next) {
+router.post('/:addr/projects', function (req, res,  next) {
   let projAddr;
   ProjectContract.new({
     from: req.params.addr,
@@ -50,7 +53,8 @@ router.post('/:addr/project', function (req, res,  next) {
     gasPrice: 100000000000
   }).then(instance => {
     projAddr = instance.address;
-    return instance.set(req.body.title, req.body.description, req.body.projectStart, req.body.projectEnd, req.body.fundingGoal, req.body.fundingStart, req.body.fundingEnd, {
+    store.addProject(projAddr, req.params.addr)
+    return instance.set(req.body.title, req.body.description, req.body.fundingGoal, Date.parse(req.body.fundingEnd), {
       from: req.params.addr,
       gas: 4712388,
       gasPrice: 100000000000
