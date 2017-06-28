@@ -26,9 +26,6 @@ export default class UserEntry extends React.Component {
             <div>
               {/*1st parameter of the bind function is the react event object*/}
               <Link to="/dashboard" onClick={this.selectUser.bind(this, this.props.item)}>{this.props.item}</Link>
-                {/*<div onClick={this.selectUser.bind(this, this.props.item)}>{this.props.item.name}</div>*/}
-                
-                {/*<button onClick={this.selectUser.bind(this, this.props.item)}>select</button>*/}
             </div>
 
         );

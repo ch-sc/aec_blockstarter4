@@ -30,17 +30,11 @@ export default class BackingFormular extends React.Component {
 
   doBackProject() {
     if (this.state.fundingAmount > 0) {
-      /*this.props.backProject.bind(this.props.loggedInUser,
-          this.props.projectAddress,
-          this.state.fundingAmount);*/
-      
-      //this.props.dispatch(
         this.props.backProject(
           this.props.loggedInUser,
           this.props.projectAddress,
           this.state.fundingAmount
         )
-      //);
       
     }
   }
