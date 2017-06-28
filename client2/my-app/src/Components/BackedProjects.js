@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import { requestBackedProjects } from '../Actions/Actions';
 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 
-@connect(store => {
-  return {
+@connect(
+  store => {
+    return {
       loggedInUser: store.userReducer.loggedIn,
       projects: store.projectsReducer.backedProjects,
       isLoading: store.projectsReducer.isLoadingBackedProjects
+    };
+  },
+  {
+    requestBackedProjects
   }
-},{
-  requestBackedProjects
-})
+)
 
 export default class BackedProjects extends React.Component {
-
   constructor(props) {
     super(props);
   }
@@ -23,14 +25,19 @@ export default class BackedProjects extends React.Component {
     this.props.requestBackedProjects(this.props.loggedInUser);
   }
 
-    render() {
-      console.log('My backed projects: ', this.props.projects)
+  render() {
+    console.log('My backed projects: ', this.props.projects);
 
-      return(
-        <div>
-          My Projects:
-          {this.props.projects && this.props.projects.map(proj => <div key={proj.id}>{proj.name}</div>)}
-        </div>
-      )
-    }
+    return (
+      <div>
+        My Projects:
+        {this.props.projects &&
+          this.props.projects.map(proj =>
+            <div key={proj.id}>
+              {proj.name}
+            </div>
+          )}
+      </div>
+    );
+  }
 }
