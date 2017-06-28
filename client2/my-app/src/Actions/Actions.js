@@ -38,3 +38,11 @@ export function requestBackedProjects(user) {
         payload: axios.get('https://jsonplaceholder.typicode.com/posts/3/comments')
     };
 }
+
+export function backProject(user, project, amount) {
+    console.log('Funding project with ', amount, 'Ether')
+    return {
+        type: REQUEST_PROJECTS_BACKED,
+        payload: axios.post(`${API_ENDPOINT}/funds`, {userAddr: user, projAddr: project, funding: amount })
+    };
+}
