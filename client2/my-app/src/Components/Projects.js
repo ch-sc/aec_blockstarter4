@@ -1,24 +1,34 @@
 import React, { Component } from 'react';
-import { loginUser } from '../Actions/UserActions';
+import { requestOwnedProjects } from '../Actions/Actions';
+
+import { connect } from "react-redux";
+
+@connect(store => {
+  return {
+      loggedInUser: store.userReducer.loggedIn,
+      ownedProjects: store.projectsReducer.ownedProjects
+  }
+},{
+  requestOwnedProjects
+})
 
 export default class Projects extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.loadProjects.bind(this.props.route.user);
   }
 
-  loadProjects(user){
-    // load user's projects...
+  componentWillMount() {
+    this.props.requestOwnedProjects(this.props.loggedInUser);
   }
 
     render() {
+      console.log('projects: ', this.props.ownedProjects)
+
       return(
         <div>Projects:
-          {/*show all projects here*/}
+          {this.props.ownedProjects && this.props.ownedProjects.map(proj => <div key={proj.id}>{proj.title}</div>)}          
         </div>
       )
     }
-
 }

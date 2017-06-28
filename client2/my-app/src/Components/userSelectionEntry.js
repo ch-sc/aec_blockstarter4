@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { loginUser } from '../Actions/UserActions';
+import { loginUser } from '../Actions/Actions';
 import { connect } from "react-redux";
 import { Route, HashRouter as Router, Switch, Redirect, Link } from 'react-router-dom';
-
 
 @connect(store => {
     return {};
