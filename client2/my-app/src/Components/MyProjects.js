@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { requestOwnedProjects } from '../Actions/Actions';
+import ProjectCreation from './ProjectCreation';
 
 import { connect } from "react-redux";
 
@@ -29,7 +30,9 @@ export default class MyProjects extends React.Component {
       return(
         <div>
           My Projects:
-          {this.props.projects && this.props.projects.map(proj => <div key={proj.id}>{proj.name}</div>)}
+          {this.props.projects && this.props.projects.map(proj => <div key={proj.address}>{proj.title}</div>)}
+          Create new Project:
+          <ProjectCreation/>
         </div>
       )
     }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { requestProjects } from '../Actions/Actions';
-import BackingFormular from './BackingFormular';
+import BackableProject from './BackableProject';
 
 import { connect } from 'react-redux';
 
@@ -35,9 +35,8 @@ export default class AllProjects extends React.Component {
         {!this.props.projects && <p>No projects available yet! :(</p>}
         {this.props.projects &&
           this.props.projects.map(proj =>
-            <div key={proj.id}>
-              {proj.title}
-              <BackingFormular project={proj}/>
+            <div key={proj.address}>
+              <BackableProject project={proj}/>
             </div>
           )}
       </div>
