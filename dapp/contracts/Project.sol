@@ -138,6 +138,13 @@ contract Project {
 
 		return (currentStatus, fundings.length, fundingAmount);
 	}
+  
+  function isBackedBy(address addr) public constant returns (bool) {
+    for (var i = 0; i < fundings.length; i++) {
+      if (fundings[i].backer == addr) return true;
+    }
+    return false;
+  }
 
 	function getProjectInfo() public constant returns (address, string, string, uint, uint, uint, uint, uint, uint, uint) {
 		return (creator, title, description, fundingAmount, fundingGoal, fundingStart, fundingEnd, fundings.length, shares.length, this.balance);
