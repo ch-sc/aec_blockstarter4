@@ -6,6 +6,7 @@ const TruffleContract = require('truffle-contract');
 const store = require('../lib/store')
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545');
+const web3 = new Web3(provider);
 
 const projectData = JSON.parse(fs.readFileSync('../dapp/build/contracts/Project.json'));
 const ProjectContract = new TruffleContract(projectData);
@@ -49,6 +50,9 @@ class ProjectCtrl {
   }
 
   create(options, callback) {
+    options = Object.assign(options, {
+      from: web3.eth.accounts[0]
+    })
     let projAddr;
     ProjectContract.new({
         from: options.from,
