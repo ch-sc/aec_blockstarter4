@@ -53,6 +53,19 @@ router.post('/:addr/projects', function(req, res, next) {
 
 
 /**
+ * PUT /users/{userAddr}/project/{projAddr}
+ * returns all projects
+ */
+router.put('/:userAddr/project/:projAddr', function(req, res, next) {
+  new ProjectCtrl().update(req.params.userAddr, req.params.projAddr, req.body, (err, result) => {
+    if (err) return next(err)
+    res.send(result)
+  })
+});
+
+
+
+/**
  * DELETE /users/{userAddr}/project/{projAddr}
  * removes the project and sends all the fundings back to each backer
  * returns true

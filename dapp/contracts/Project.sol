@@ -48,6 +48,26 @@ contract Project {
 		fundingGoal = newFundingGoal;
 		fundingEnd = newFundingEnd;
 	}
+  
+  function setTitle(string newTitle) public {
+    title = newTitle;
+  }
+  
+  function setDescription(string newDescription) public {
+    description = newDescription;
+  }
+  
+  function setFundingGoal(uint newFundingGoal) public {
+    fundingGoal = newFundingGoal;
+  }
+  
+  function setFundingStart(uint newFundingStart) public {
+    fundingStart = newFundingStart;
+  }
+  
+  function setFundingEnd(uint newFundingEnd) public {
+    fundingEnd = newFundingEnd;
+  }
 
 	function remove() public payable onlyCreator {
     			

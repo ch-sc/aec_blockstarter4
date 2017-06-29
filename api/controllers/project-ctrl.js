@@ -75,9 +75,48 @@ class ProjectCtrl {
       .catch(callback);
   }
   
+  update(from, projAddr, properties, callback) {
+
+    var proj;
+    ProjectContract.at(projAddr)
+      .then(instance => {
+        proj = instance;
+        if (properties.title) {
+          return proj.setTitle(properties.title)
+        }
+        return proj;
+      })
+      .then(() => {
+        if (properties.description) {
+          return proj.setDescription(properties.description)
+        }
+        return proj;
+      })
+      .then(() => {
+        if (properties.fundingGoal) {
+          return proj.setFundingGoal(properties.fundingGoal)
+        }
+        return proj;
+      })
+      .then(() => {
+        if (properties.fundingStart) {
+          return proj.setFundingStart(properties.fundingStart)
+        }
+        return proj;
+      })
+      .then(() => {
+        if (properties.fundingEnd) {
+          return proj.setFundingEnd(properties.fundingEnd)
+        }
+        return proj;
+      })
+      .then(() => callback(null, true))
+      .catch(callback);      
+  }
+  
   delete(options, callback) {
     ProjectContract.at(options.projAddr).then(instance => {
-        instance.remove({
+        return instance.remove({
           from: options.from,
           gas: 4712388,
           gasPrice: 100000000000
