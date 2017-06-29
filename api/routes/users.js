@@ -38,8 +38,7 @@ router.get('/:addr/projects', function(req, res, next) {
  * returns project if successful
  */
 router.post('/:addr/projects', function(req, res, next) {
-  new ProjectCtrl().create({
-    from: req.params.addr,
+  new ProjectCtrl().create(req.params.addr, {
     title: req.body.title,
     description: req.body.description,
     fundingGoal: req.body.fundingGoal,
@@ -53,10 +52,12 @@ router.post('/:addr/projects', function(req, res, next) {
 
 
 /**
- * PUT /users/{userAddr}/project/{projAddr}
+ * PUT /users/{userAddr}/projects/{projAddr}
  * returns all projects
  */
-router.put('/:userAddr/project/:projAddr', function(req, res, next) {
+router.put('/:userAddr/projects/:projAddr', function(req, res, next) {
+  console.log(req.params.userAddr)
+  console.log(req.params.projAddr)
   new ProjectCtrl().update(req.params.userAddr, req.params.projAddr, req.body, (err, result) => {
     if (err) return next(err)
     res.send(result)

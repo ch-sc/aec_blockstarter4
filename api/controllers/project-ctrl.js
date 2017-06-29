@@ -27,21 +27,7 @@ class ProjectCtrl {
             return instance.getProjectInfo()
           })
           .then(result => {
-            let i = 0
-            const project = {
-              address: address,
-              creator: result[i++],
-              title: result[i++].toString(),
-              description: result[i++].toString(),
-              fundingAmount: result[i++].toNumber(),
-              fundingGoal: result[i++].toNumber(),
-              fundingStart: result[i++].toNumber(),
-              fundingEnd: result[i++].toNumber(),
-              fundingsCount: result[i++].toNumber(),
-              sharesCount: result[i++].toNumber(),
-              balance: result[i++].toNumber(),
-            };
-            callback(null, project)
+            callback(null, this._formatProjectInfo(address, result))
           })
           .catch(callback)
       })
@@ -49,20 +35,18 @@ class ProjectCtrl {
     async.parallel(tasks, callback)
   }
 
-  create(options, callback) {
-    options = Object.assign({
-      from: web3.eth.accounts[0]
-    }, options || {})
+  create(from, options, callback) {
+    from = from || web3.eth.accounts[0];
     let projAddr;
     ProjectContract.new({
-        from: options.from,
+        from: from,
         gas: 4712388,
         gasPrice: 100000000000
       }).then(instance => {
         projAddr = instance.address;
-        store.addProject(projAddr, options.from)
+        store.addProject(projAddr, from)
         return instance.set(options.title, options.description, options.fundingGoal, Date.parse(options.fundingEnd), {
-          from: options.from,
+          from: from,
           gas: 4712388,
           gasPrice: 100000000000
         })
@@ -76,41 +60,52 @@ class ProjectCtrl {
   }
   
   update(from, projAddr, properties, callback) {
-
-    var proj;
+    let proj, address;
+    let options = {
+      from: from,
+      gas: 4712388,
+      gasPrice: 100000000000
+    };
     ProjectContract.at(projAddr)
       .then(instance => {
         proj = instance;
+        address = instance.address;
         if (properties.title) {
-          return proj.setTitle(properties.title)
+          return proj.setTitle(properties.title, options)
         }
         return proj;
       })
       .then(() => {
         if (properties.description) {
-          return proj.setDescription(properties.description)
+          return proj.setDescription(properties.description, options)
         }
         return proj;
       })
       .then(() => {
         if (properties.fundingGoal) {
-          return proj.setFundingGoal(properties.fundingGoal)
+          return proj.setFundingGoal(properties.fundingGoal, options)
         }
         return proj;
       })
       .then(() => {
         if (properties.fundingStart) {
-          return proj.setFundingStart(properties.fundingStart)
+          return proj.setFundingStart(Date.parse(properties.fundingStart), options)
         }
         return proj;
       })
       .then(() => {
         if (properties.fundingEnd) {
-          return proj.setFundingEnd(properties.fundingEnd)
+          return proj.setFundingEnd(Date.parse(properties.fundingEnd), options)
         }
         return proj;
       })
-      .then(() => callback(null, true))
+      .then(() => {
+        address = proj.address
+        return proj.getProjectInfo()
+      })
+      .then(result => {
+        callback(null, this._formatProjectInfo(address, result))
+      })
       .catch(callback);      
   }
   
@@ -124,6 +119,23 @@ class ProjectCtrl {
       })
       .then(result => callback(null, result))
       .catch(callback);    
+  }
+  
+  _formatProjectInfo(address, result) {
+    let i = 0
+    return {
+      address: address,
+      creator: result[i++],
+      title: result[i++].toString(),
+      description: result[i++].toString(),
+      fundingAmount: result[i++].toNumber(),
+      fundingGoal: result[i++].toNumber(),
+      fundingStart: result[i++].toNumber(),
+      fundingEnd: result[i++].toNumber(),
+      fundingsCount: result[i++].toNumber(),
+      sharesCount: result[i++].toNumber(),
+      balance: result[i++].toNumber(),
+    }
   }
 
 }

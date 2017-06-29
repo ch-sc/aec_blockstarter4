@@ -12,6 +12,7 @@ class Store {
   }
 
   getProjects(userAddr) {
+    console.log(userAddr)
     const projects = [];
     Object.keys(this.projects).map(addr => projects.push(this.projects[addr]));
     if (userAddr) {
