@@ -31,14 +31,16 @@ export default class MyProjects extends React.Component {
 
     return (
       <div>
-        My Projects:
+        <h2>My Projects:</h2>        
         {this.props.projects &&
           this.props.projects.map(proj =>
           <MyProjectEntry project={proj} key={proj.address}/> 
           
           )}
           {/*<div key={proj.address}>{proj.title}</div>*/}
-        Create new Project:
+        
+        <h2>Create new Project:</h2>
+
         <ProjectCreation />
       </div>
     );

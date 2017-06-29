@@ -31,7 +31,7 @@ export default class AllProjects extends React.Component {
 
     return (
       <div>
-        Projects:
+        <h2>Projects:</h2>
         {!this.props.projects && <p>No projects available yet! :(</p>}
         {this.props.projects &&
           this.props.projects.map(proj =>

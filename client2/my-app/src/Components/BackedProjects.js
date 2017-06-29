@@ -30,7 +30,7 @@ export default class BackedProjects extends React.Component {
 
     return (
       <div>
-        My Projects:
+        <h2>My Projects:</h2>
         {this.props.projects &&
           this.props.projects.map(proj =>
             <div key={proj.id}>
