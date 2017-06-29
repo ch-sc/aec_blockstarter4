@@ -39,3 +39,17 @@ app.use(function(err, req, res) {
 app.listen(port, () => {
   logger.info('App listening on port %d', port)
 })
+
+
+// only to debug
+const ProjectCtrl = require('./controllers/project-ctrl')
+for (let i = 1; i <= 10; i++) {
+  new ProjectCtrl().create({
+    title: `Test project ${i}`,
+    description: `Test description ${i}`,
+    fundingGoal: 1000000,
+    fundingEnd: '2017-07-18T15:00:00'
+  }, (err) => {
+    if (err) return logger.error(err);
+  })
+}
