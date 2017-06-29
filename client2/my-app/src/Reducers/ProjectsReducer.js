@@ -1,7 +1,8 @@
 import {
   REQUEST_PROJECTS_ALL,
   REQUEST_PROJECTS_OWNED,
-  REQUEST_PROJECTS_BACKED
+  REQUEST_PROJECTS_BACKED,
+  REQUEST_DELETE_PROJECTS
 } from '../Constants';
 
 export default function ProjectsReducer(
@@ -72,6 +73,14 @@ export default function ProjectsReducer(
         isLoadingBackedProjects: false,
         error: action.payload
       };
+    }
+
+    case REQUEST_DELETE_PROJECTS: {
+      return {
+        ...state,
+        isLoadingOwnedProjects: false,
+        ownedProjects: state.ownedProjects.filter(x => x.address !== action.data.projectAddress)
+      }
     }
   }
 

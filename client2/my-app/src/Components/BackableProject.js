@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
   store => {
     return {
       loggedInUser: store.userReducer.loggedIn,
-      projects: store.projectsReducer.backedProjects,
-      isLoading: store.projectsReducer.isLoadingBackedProjects
     };
   },
   {

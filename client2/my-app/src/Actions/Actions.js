@@ -7,7 +7,8 @@ import {
   REQUEST_PROJECTS_OWNED,
   REQUEST_PROJECTS_BACKED,
   REQUEST_BACK_PROJECTS,
-  REQUEST_CREATE_PROJECTS
+  REQUEST_CREATE_PROJECTS,
+  REQUEST_DELETE_PROJECTS
 } from '../Constants';
 
 export function requestUsers() {
@@ -60,8 +61,27 @@ export function backProject(user, project, amount) {
   };
 }
 
+export function deleteProject(user, _project) {
+  console.log('Deleting project ', _project.address, ' and refunding every backer.');
+
+  return {
+    type: REQUEST_DELETE_PROJECTS,
+    data: {
+      projectAddress: _project.address,
+      payload: axios.delete(
+        `${API_ENDPOINT}/users/` + user + `/project/` + _project.address
+      )
+    }
+  };
+}
+
 export function createProject(user, project) {
-  console.log('Trying to create project ', project.title, ' with funding goal:', project.fundingGoal);
+  console.log(
+    'Trying to create project ',
+    project.title,
+    ' with funding goal:',
+    project.fundingGoal
+  );
   return {
     type: REQUEST_CREATE_PROJECTS,
     payload: axios.post(`${API_ENDPOINT}/users/` + user + `/projects`, {
