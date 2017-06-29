@@ -56,8 +56,6 @@ router.post('/:addr/projects', function(req, res, next) {
  * returns all projects
  */
 router.put('/:userAddr/projects/:projAddr', function(req, res, next) {
-  console.log(req.params.userAddr)
-  console.log(req.params.projAddr)
   new ProjectCtrl().update(req.params.userAddr, req.params.projAddr, req.body, (err, result) => {
     if (err) return next(err)
     res.send(result)
