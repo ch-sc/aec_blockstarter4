@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import UserList from './Components/login';
-import SecuredLayer from './SecuredLayer';
+import Dashboard from './Dashboard';
 import { Route, HashRouter as Router, Switch, Redirect, Link } from 'react-router-dom';
 
 class App extends Component {
@@ -18,11 +18,11 @@ class App extends Component {
         <Router>
           <Switch>
             <Route exact path="/">
-              <Redirect to="/blockstarter" />
+              <Redirect to="/dashboard" />
             </Route>
             
             <Route path="/login" component={UserList} />
-            <Route path="/blockstarter" component={SecuredLayer} />
+            <Route path="/dashboard" component={Dashboard} />
           </Switch>
         </Router>
         {/*<p className="App-intro">

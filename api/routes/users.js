@@ -1,44 +1,80 @@
-var express = require('express');
-const fs = require('fs');
-const Web3 = require('web3');
-const TruffleContract = require('truffle-contract');
+const express = require('express')
+const router = express.Router()
 
-var router = express.Router();
+const ProjectCtrl = require('../controllers/project-ctrl')
+const UserCtrl = require('../controllers/user-ctrl')
 
-const provider = new Web3.providers.HttpProvider('http://localhost:8545');
-const web3 = new Web3(provider);
-
-const projectData = JSON.parse(fs.readFileSync('../dapp/build/contracts/Project.json'));
-const ProjectContract = new TruffleContract(projectData);
-ProjectContract.setProvider(provider);
 
 /**
- * GET /users
+ * GET /users/
  * returns all users of the blockchain
  */
-router.get('/users', function (req, res) {
-  let users = web3.eth.account;
-  res.send(users);
+router.get('/', function(req, res, next) {
+  new UserCtrl().get({}, (err, result) => {
+    if (err) return next(err)
+    res.send(result)
+  })
 });
 
 
 /**
- * GET /user/{addr}/projects
+ * GET /users/{addr}/projects
  * lists all the proejcts that a user owns
  */
-router.get('/user/:addr/projects', function (req, res) {
-
+router.get('/:addr/projects', function(req, res, next) {
+  new ProjectCtrl().get({
+    creator: req.params.addr
+  }, (err, result) => {
+    if (err) return next(err)
+    res.send(result)
+  })
 });
 
 
 /**
- * GET /user/{addr}/funds
+ * POST /users/{addr}/projects
+ * BODY: {title, description, etc...}
+ * creates a project for a ceratain user
+ * returns project if successful
+ */
+router.post('/:addr/projects', function(req, res, next) {
+  new ProjectCtrl().create({
+    from: req.params.addr,
+    title: req.body.title,
+    description: req.body.description,
+    fundingGoal: req.body.fundingGoal,
+    fundingEnd: req.body.fundingEnd
+  }, (err, result) => {
+    if (err) return next(err);
+    res.send(result)
+  })
+});
+
+
+
+/**
+ * DELETE /users/{userAddr}/project/{projAddr}
+ * removes the project and sends all the fundings back to each backer
+ * returns true
+ */
+router.delete('/:userAddr/project/:projAddr', function(req, res, next) {
+  new ProjectCtrl().delete({
+    projAddr: req.params.projAddr,
+    userAddr: req.params.userAddr
+  }, (err, result) => {
+    if (err) return next(err);
+    res.send(result)    
+  })
+});
+
+
+
+/**
+ * GET /users/{addr}/funds
  * list all the projects that I already backed/funded
  */
-router.get('/user/:addr/funds', function (req, res) {
-  let userAddr = req.params.addr;
-  let balance = web3.fromWei(eth.getBalance(userAddr), "ether");
-  res.send(balance);
+router.get('/:addr/funds', function(req, res) {
+  // TODO
 });
 
 module.exports = router;
