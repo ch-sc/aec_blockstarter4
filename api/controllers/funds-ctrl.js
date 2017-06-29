@@ -25,11 +25,10 @@ class FundCtrl {
         ProjectContract.at(entry.projAddr)
           .then(instance => {
             address = instance.address
-            if(instance.isBackedBy(address)){
-               return instance.getProjectInfo()
+            if (instance.isBackedBy(address)) {
+              return instance.getProjectInfo()
             }
-          })
-          .then(result => {
+          }).then(result => {
             callback(null, this._formatProjectInfo(address, result))
           })
           .catch(callback)
