@@ -3,13 +3,13 @@ const router = express.Router()
 
 const ProjectCtrl = require('../controllers/project-ctrl')
 const UserCtrl = require('../controllers/user-ctrl')
-
+const FundCtrl = require('../controllers/funds-ctrl')
 
 /**
  * GET /users/
  * returns all users of the blockchain
  */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
   new UserCtrl().get({}, (err, result) => {
     if (err) return next(err)
     res.send(result)
@@ -21,7 +21,7 @@ router.get('/', function(req, res, next) {
  * GET /users/{addr}/projects
  * lists all the proejcts that a user owns
  */
-router.get('/:addr/projects', function(req, res, next) {
+router.get('/:addr/projects', function (req, res, next) {
   new ProjectCtrl().get({
     userAddr: req.params.addr
   }, (err, result) => {
@@ -37,7 +37,7 @@ router.get('/:addr/projects', function(req, res, next) {
  * creates a project for a ceratain user
  * returns project if successful
  */
-router.post('/:addr/projects', function(req, res, next) {
+router.post('/:addr/projects', function (req, res, next) {
   new ProjectCtrl().create(req.params.addr, {
     title: req.body.title,
     description: req.body.description,
@@ -55,7 +55,7 @@ router.post('/:addr/projects', function(req, res, next) {
  * PUT /users/{userAddr}/projects/{projAddr}
  * returns all projects
  */
-router.put('/:userAddr/projects/:projAddr', function(req, res, next) {
+router.put('/:userAddr/projects/:projAddr', function (req, res, next) {
   new ProjectCtrl().update(req.params.userAddr, req.params.projAddr, req.body, (err, result) => {
     if (err) return next(err)
     res.send(result)
@@ -69,13 +69,13 @@ router.put('/:userAddr/projects/:projAddr', function(req, res, next) {
  * removes the project and sends all the fundings back to each backer
  * returns true
  */
-router.delete('/:userAddr/project/:projAddr', function(req, res, next) {
+router.delete('/:userAddr/project/:projAddr', function (req, res, next) {
   new ProjectCtrl().delete({
     projAddr: req.params.projAddr,
     userAddr: req.params.userAddr
   }, (err, result) => {
     if (err) return next(err);
-    res.send(result)    
+    res.send(result)
   })
 });
 
@@ -85,8 +85,14 @@ router.delete('/:userAddr/project/:projAddr', function(req, res, next) {
  * GET /users/{addr}/funds
  * list all the projects that I already backed/funded
  */
-router.get('/:addr/funds', function(req, res) {
+router.get('/:addr/funds', function (req, res) {
   // TODO
+  new FundCtrl().getBackerProjects({
+    userAddr: req.params.addr
+  }, (err, result) => {
+    if (err) return next(err);
+    res.send(result)
+  })
 });
 
 module.exports = router;
