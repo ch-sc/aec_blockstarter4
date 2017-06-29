@@ -23,7 +23,7 @@ router.get('/', function(req, res, next) {
  */
 router.get('/:addr/projects', function(req, res, next) {
   new ProjectCtrl().get({
-    creator: req.params.addr
+    userAddr: req.params.addr
   }, (err, result) => {
     if (err) return next(err)
     res.send(result)

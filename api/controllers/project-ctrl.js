@@ -50,9 +50,9 @@ class ProjectCtrl {
   }
 
   create(options, callback) {
-    options = Object.assign(options, {
+    options = Object.assign({
       from: web3.eth.accounts[0]
-    })
+    }, options || {})
     let projAddr;
     ProjectContract.new({
         from: options.from,
