@@ -45,7 +45,7 @@ export function requestBackedProjects(user) {
   console.log('Requesting backed projects of user ', user);
   return {
     type: REQUEST_PROJECTS_BACKED,
-    payload: axios.get('https://jsonplaceholder.typicode.com/posts/3/comments')
+    payload: axios.get(`${API_ENDPOINT}/users/` + user + `/funds`)
   };
 }
 

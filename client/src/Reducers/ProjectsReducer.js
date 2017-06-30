@@ -2,11 +2,16 @@ import {
   REQUEST_PROJECTS_ALL,
   REQUEST_PROJECTS_OWNED,
   REQUEST_PROJECTS_BACKED,
+  REQUEST_Projects_Invested,
   REQUEST_DELETE_PROJECTS
 } from '../Constants';
 
 export default function ProjectsReducer(
   state = {
+
+    isLoadingProjects_Invested: false,
+    Projects_Invested: undefined,
+
     isLoadingProjects: false,
     isLoadingOwnedProjects: false,
     isLoadingBackedProjects: false,
@@ -20,6 +25,20 @@ export default function ProjectsReducer(
   action
 ) {
   switch (action.type) {
+
+    // state chages for general Projects_Invested
+    case REQUEST_Projects_Invested + '_PENDING': {
+      return { ...state, isLoadingProjects_Invested: true };
+    }
+
+    case REQUEST_Projects_Invested + '_FULFILLED': {
+      return { ...state, isLoadingProjects_Invested: false, Projects_Invested: action.payload.data };
+    }
+
+    case REQUEST_Projects_Invested + '_REJECTED': {
+      return { ...state, isLoadingProjects_Invested: false, error: action.payload };
+    }
+
     // state chages for general projects
     case REQUEST_PROJECTS_ALL + '_PENDING': {
       return { ...state, isLoadingProjects: true };
