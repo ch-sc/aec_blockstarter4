@@ -22,3 +22,37 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+ .topbar-menu {
+                
+  font-weight: bold;
+  font-size: 90%;
+   padding: 13px 15px 0 15px;
+  height:27px;
+                
+  }
+
+#menu-bar {
+                
+  width:1000px;
+  margin:0 auto;
+                
+ }
+
+ h3 a:hover {
+  color:#1167a8;              
+}
+
+.no-border {   
+  border-left:none;
+  padding:0;
+}
+            
+.border-right {    
+  border-right: 1px solid #CCCCCC;                
+}
+
+ #appImage {
+  width:400px;
+  margin-left:20px;              
+}
