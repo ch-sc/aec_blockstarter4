@@ -21,7 +21,7 @@ export default class Dashboard extends React.Component {
   }
 
   checkLoggedIn() {
-    this.props.requestUser();
+    this.props.requestUser(); 
   }
 
   render() {
