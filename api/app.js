@@ -43,7 +43,7 @@ app.listen(port, () => {
 
 // only to debug
 const ProjectCtrl = require('./controllers/project-ctrl')
-for (let i = 1; i <= 1; i++) {
+for (let i = 1; i <= 10; i++) {
   new ProjectCtrl().create(null, {
     title: `Test project ${i}`,
     description: `Test description ${i}`,

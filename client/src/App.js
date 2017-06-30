@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <h2>Welcome to Blockstarter 4.0</h2>
+          <h2>Blockstarter 4.0</h2>
         </div>
         <Router>
           <Switch>

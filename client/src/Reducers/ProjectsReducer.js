@@ -2,18 +2,16 @@ import {
   REQUEST_PROJECTS_ALL,
   REQUEST_PROJECTS_OWNED,
   REQUEST_PROJECTS_BACKED,
+  REQUEST_Projects_Invested,
   REQUEST_DELETE_PROJECTS
 } from '../Constants';
 
 export default function ProjectsReducer(
   state = {
-<<<<<<< HEAD:client2/my-app/src/Reducers/ProjectsReducer.js
 
     isLoadingProjects_Invested: false,
     Projects_Invested: undefined,
 
-=======
->>>>>>> c4fcdecaf1267322a715790816e213e43ff286c3:client/src/Reducers/ProjectsReducer.js
     isLoadingProjects: false,
     isLoadingOwnedProjects: false,
     isLoadingBackedProjects: false,
@@ -27,7 +25,6 @@ export default function ProjectsReducer(
   action
 ) {
   switch (action.type) {
-<<<<<<< HEAD:client2/my-app/src/Reducers/ProjectsReducer.js
 
     // state chages for general Projects_Invested
     case REQUEST_Projects_Invested + '_PENDING': {
@@ -42,8 +39,6 @@ export default function ProjectsReducer(
       return { ...state, isLoadingProjects_Invested: false, error: action.payload };
     }
 
-=======
->>>>>>> c4fcdecaf1267322a715790816e213e43ff286c3:client/src/Reducers/ProjectsReducer.js
     // state chages for general projects
     case REQUEST_PROJECTS_ALL + '_PENDING': {
       return { ...state, isLoadingProjects: true };
