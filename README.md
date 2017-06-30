@@ -41,3 +41,5 @@ Start the client app:
 ```
 cd client/ && npm run dev
 ```
+Start the client app:
+cd client app: // && npm run dev
