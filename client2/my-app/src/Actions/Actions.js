@@ -15,6 +15,14 @@ export function loginUser(user) {
     }
 }
 
+export function requestProjects_Invested() {
+    console.log('requesting all Projects_Invested')
+    return {
+        type: REQUEST_Projects_Invested,
+        payload: axios.get('https://jsonplaceholder.typicode.com/todos')
+    };
+}
+
 export function requestProjects() {
     console.log('requesting all projects')
     return {
@@ -22,6 +30,8 @@ export function requestProjects() {
         payload: axios.get('https://jsonplaceholder.typicode.com/posts')
     };
 }
+
+
 
 export function requestOwnedProjects(user) {
     console.log('Requesting ', user.name, '\'s projects...')
