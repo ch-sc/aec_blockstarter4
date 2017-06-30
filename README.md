@@ -8,7 +8,7 @@
 ## Install
 
 ```
-npm -g testrpc truffle
+npm install -g testrpc truffle
 ```
 
 ```
@@ -32,12 +32,12 @@ Deploy the smart contract:
 cd dapp/ && truffle deploy
 ```
 
-Start the node app:
+Start the api app:
 ```
 cd api/ && npm start
 ```
 
 Start the client app:
 ```
-cd client/ && npm start
+cd client/ && npm run dev
 ```
