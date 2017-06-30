@@ -53,7 +53,7 @@ class ProjectCtrl {
       }).then(() => {
         return ProjectContract.at(projAddr)
           .then(instance => instance.getProjectInfo())
-          .then(result => callback(null, result))
+          .then(result => callback(null, this._formatProjectInfo(projAddr, result)))
           .catch(callback)
       })
       .catch(callback);

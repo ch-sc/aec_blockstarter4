@@ -85,11 +85,8 @@ router.delete('/:userAddr/project/:projAddr', function (req, res, next) {
  * GET /users/{addr}/funds
  * list all the projects that I already backed/funded
  */
-router.get('/:addr/funds', function (req, res) {
-  // TODO
-  new FundCtrl().getBackerProjects({
-    userAddr: req.params.addr
-  }, (err, result) => {
+router.get('/:addr/funds', function (req, res, next) {
+  new FundCtrl().getBackerProjects(req.params.addr, (err, result) => {
     if (err) return next(err);
     res.send(result)
   })
