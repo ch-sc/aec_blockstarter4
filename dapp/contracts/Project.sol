@@ -48,6 +48,26 @@ contract Project {
 		fundingGoal = newFundingGoal;
 		fundingEnd = newFundingEnd;
 	}
+  
+  function setTitle(string newTitle) public {
+    title = newTitle;
+  }
+  
+  function setDescription(string newDescription) public {
+    description = newDescription;
+  }
+  
+  function setFundingGoal(uint newFundingGoal) public {
+    fundingGoal = newFundingGoal;
+  }
+  
+  function setFundingStart(uint newFundingStart) public {
+    fundingStart = newFundingStart;
+  }
+  
+  function setFundingEnd(uint newFundingEnd) public {
+    fundingEnd = newFundingEnd;
+  }
 
 	function remove() public payable onlyCreator {
     			
@@ -118,6 +138,14 @@ contract Project {
 
 		return (currentStatus, fundings.length, fundingAmount);
 	}
+  
+  function isBackedBy(address addr) public constant returns (bool) {
+    for (var i = 0; i < fundings.length; i++) {
+			Funding funding = fundings[i];
+      if (funding.backer == addr) return true;
+    }
+    return false;
+  }
 
 	function getProjectInfo() public constant returns (address, string, string, uint, uint, uint, uint, uint, uint, uint) {
 		return (creator, title, description, fundingAmount, fundingGoal, fundingStart, fundingEnd, fundings.length, shares.length, this.balance);
