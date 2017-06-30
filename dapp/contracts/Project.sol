@@ -141,7 +141,8 @@ contract Project {
   
   function isBackedBy(address addr) public constant returns (bool) {
     for (var i = 0; i < fundings.length; i++) {
-      if (fundings[i].backer == addr) return true;
+			Funding funding = fundings[i];
+      if (funding.backer == addr) return true;
     }
     return false;
   }
