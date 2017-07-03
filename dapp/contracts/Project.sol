@@ -33,10 +33,11 @@ contract Project {
 	// For voting functionality.
 	mapping (address => voter) public voterInfo;
 	mapping (bytes32 => uint) public votesReceived;
-  bytes32[] public topicList = {'Topic A', 'Topic B', 'Topic C'};
+  bytes32[] public topicList;
+	// totalTokens and balanceTokens should be same at start as no voting or buying has been done
   uint public totalTokens = 1000; // Total no. of tokens available for this election
-  uint public balanceTokens; // Total no. of tokens still available for purchase
-  uint public tokenPrice = 1; // Price per token (in wei)
+  uint public balanceTokens = 1000; // Total no. of tokens still available for purchase
+  uint public tokenPrice; // Price per token (in wei)
 
 	Share[] shares;
 	Funding[] fundings;
@@ -99,7 +100,7 @@ contract Project {
 			fundingAmount = fundingAmount - funding.fundingAmount;
 		}
 
-		/**
+		/*
 		If the funding amount of this project is not yet 0, something unusual happend and the remove process should not get finalized. As error handling purposes all state changes will be reverted.
 		*/
 		if (fundingAmount != 0) {
@@ -110,7 +111,7 @@ contract Project {
 		selfdestruct(creator);
 	}
 
-	/**
+	/*
 	The fallback function does not throw an exception, but will use the transfered Ether ('msg.value') to back this project.
 	*/
 	function() payable {
@@ -169,11 +170,16 @@ contract Project {
 	}
 
 	// Voting functions.
+	function setVoting(bytes32[] topicNames, uint pricePerToken) {
+    topicList = topicNames;
+		tokenPrice = pricePerToken;
+  }
+
   function totalVotesFor(bytes32 topic) constant returns (uint) {
 		return votesReceived[topic];
   }
 
-  /**
+  /*
 	Instead of just taking the topic name as an argument, we also require the no. of tokens this voter wants to vote for the topic.
 	*/
   function voteForTopic(bytes32 topic, uint votesInTokens) {
@@ -214,7 +220,7 @@ contract Project {
     return uint(-1);
   }
 
-  /**
+  /*
 	Function to purchase the tokens. Note the keyword 'payable' below, now our contract can accept Ether from anyone who calls this function.
 	*/
   function buy() payable returns (uint) {
@@ -235,14 +241,14 @@ contract Project {
   	return (voterInfo[user].tokensBought, voterInfo[user].tokensUsedPerTopic);
 	}
 
-  /**
+  /*
   All the ether sent by voters who purchased the tokens is in this contract's account. This method will be used to transfer out all those ethers in to another account. *** The way this function is written currently,anyone can call this method and transfer the balance in to their account. We should add check to make sure only the owner of this contract can cash out.
   */
 
 	function transferTo(address account) {
 		account.transfer(this.balance);
   }
-		
+
   function allTopics() constant returns (bytes32[]) {
     return topicList;
   }

@@ -108,6 +108,46 @@ function remove(address) {
   }).catch(err => console.error(err))
 }
 
+// voting functions
+function setVoting(address, topicNames, pricePerToken) {
+  console.log(address, topicNames, pricePerToken);
+  return ProjectContract.at(address).then(instance => {
+    return instance.setVoting(topicNames, web3.toWei(pricePerToken, 'ether'));
+  }).then(result => {
+    console.log('project %s is setup for voting', address)
+  }).catch(err => console.error(err))
+}
+
+function buy(address, value) {
+  return ProjectContract.at(address).then(instance => {
+    return instance.buy({
+       value: web3.toWei(value, 'ether'),
+      from: account
+    });
+  }).then(result => {
+    web3.eth.getBalance(instance.address, function(error, result) {
+      console.log('Total Balance: %s', web3.fromWei(result.toString()) + " Ether")
+    })
+    console.log('Tokens bought: %s', result.toString())
+    return result
+  }).catch(err => console.error(err))
+}
+
+function voteForTopic(address, topic, tokens) {
+  return ProjectContract.at(address).then(instance => {
+    return instance.voteForTopic(topic, tokens, {
+      from: account,
+      gas: 4712388
+    });
+  }).then(result => {
+    return ProjectContract.at(address).then(instance => {
+      return instance.totalVotesFor(topic).then(result => {
+        console.log("Total votes for " + topic + ": %s", result.toString() )
+      }).catch(err => console.error(err))
+    }).catch(err => console.error(err))
+  }).catch(err => console.error(err))
+}
+
 //  node cli.js create "Test title" "My description" 1000000 "2017-06-30T15:00:00"
 commander.command('create')
   .description('adds a new project')
@@ -156,6 +196,32 @@ commander.command('remove')
   .arguments('[address]')
   .action(address => {
     remove(address)
+  })
+
+/* node cli.js setvoting 0x....0 {'Topic A', 'Topic B', 'Topic C'} "0.1"
+*/
+commander.command('setvoting')
+  .description('sets voting functionality')
+  .arguments('[address] [topicNames] [pricePerToken]')
+  .action((address, topicNames, pricePerToken) => {
+    setVoting(address, topicNames, pricePerToken)
+  })
+
+/* node cli.js buytoken 0x....0 "1"
+*/
+commander.command('buytoken')
+  .description('buy tokens')
+  .arguments('[value]')
+  .action((address, value) => {
+    buy(address, value)
+  })
+
+// node cli.js vote 0x....0 "Topic A" 10
+commander.command('vote')
+  .description('vote for a topic')
+  .arguments('[address] [topic] [tokens]')
+  .action((address, topic, tokens) => {
+    voteForTopic(address, topic, tokens)
   })
 
 commander.parse(process.argv)
