@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 
 contract Project {
-	
+
 	struct Funding {
 		address backer;
 		uint date;
@@ -29,7 +29,7 @@ contract Project {
 	uint fundingGoal = 0;
 	uint fundingStart; // timestamp
 	uint fundingEnd = 0; // timestamp
-  
+
 	// For voting functionality.
 	mapping (address => voter) public voterInfo;
 	mapping (bytes32 => uint) public votesReceived;
@@ -41,12 +41,12 @@ contract Project {
 
 	Share[] shares;
 	Funding[] fundings;
-    
+
   modifier onlyCreator() {
     require(msg.sender == creator);
     _;
   }
-  
+
   modifier onlyGoalReached() {
     require(fundingAmount > fundingGoal);
     _;
@@ -55,9 +55,9 @@ contract Project {
 	function Project() public {
 		// Linking the creator to this project.
 		creator = msg.sender;
-	
+
 	}
-	
+
 	function set(string newTitle, string newDescription, uint newFundingGoal, uint newFundingEnd) public {
 		title = newTitle;
 		description = newDescription;
@@ -65,37 +65,37 @@ contract Project {
 		fundingGoal = newFundingGoal;
 		fundingEnd = newFundingEnd;
 	}
-  
+
   function setTitle(string newTitle) public {
     title = newTitle;
   }
-  
+
   function setDescription(string newDescription) public {
     description = newDescription;
   }
-  
+
   function setFundingGoal(uint newFundingGoal) public {
     fundingGoal = newFundingGoal;
   }
-  
+
   function setFundingStart(uint newFundingStart) public {
     fundingStart = newFundingStart;
   }
-  
+
   function setFundingEnd(uint newFundingEnd) public {
     fundingEnd = newFundingEnd;
   }
 
 	function remove() public payable onlyCreator {
-    			
+
 		for (uint i = 0; i < fundings.length; i++) {
 			Funding funding = fundings[i];
-			
+
 			if (!funding.backer.send(funding.fundingAmount)){
 				revert();
 				throw;
 			}
-			
+
 			// Decrease the actual funding amount of this project in case something odd happens.
 			fundingAmount = fundingAmount - funding.fundingAmount;
 		}
@@ -125,22 +125,22 @@ contract Project {
 		}
 
 		fundings.push(Funding(msg.sender, now, msg.value));
-    
+
     var sharesCount = msg.value / (fundingGoal / totalTokens) ;
     sharesCount = sharesCount - sharesCount % 1;
     for (uint i = 0; i < sharesCount && shares.length < totalTokens; i++) {
       shares.push(Share(msg.sender));
     }
-		
+
 		fundingAmount = fundingAmount + msg.value;
 		return fundingAmount;
 	}
-  
+
   function withdraw() public onlyCreator onlyGoalReached {
     if (this.balance != fundingAmount) throw;
     if (!creator.send(fundingAmount)) {
 			throw;
-		}  
+		}
   }
 
 	function getFundingStatus() public constant returns (string, uint, uint) {
@@ -156,7 +156,7 @@ contract Project {
 
 		return (currentStatus, fundings.length, fundingAmount);
 	}
-  
+
   function isBackedBy(address addr) public constant returns (bool) {
     for (var i = 0; i < fundings.length; i++) {
 			Funding funding = fundings[i];
@@ -167,6 +167,10 @@ contract Project {
 
 	function getProjectInfo() public constant returns (address, string, string, uint, uint, uint, uint, uint, uint, uint) {
 		return (creator, title, description, fundingAmount, fundingGoal, fundingStart, fundingEnd, fundings.length, shares.length, this.balance);
+	}
+	function getcreator() public constant returns(address)
+	{
+		return(creator);
 	}
 
 	// Voting functions.
