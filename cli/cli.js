@@ -1,12 +1,12 @@
 const fs = require('fs')
 const commander = require('commander')
 const Web3 = require('web3')
-const TruffleContract = require('truffle-contract');
+const TruffleContract = require('truffle-contract')
   
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
-const web3 = new Web3(provider);
+const web3 = new Web3(provider)
 
-const account = web3.eth.accounts[0];
+const account = web3.eth.accounts[0]
 
 const projectData = JSON.parse(fs.readFileSync('../dapp/build/contracts/Project.json'))
 const ProjectContract = new TruffleContract(projectData)
@@ -108,6 +108,135 @@ function remove(address) {
   }).catch(err => console.error(err))
 }
 
+// Voting functions
+function setVoting(address, pricePerToken, topicNames) {
+  return ProjectContract.at(address).then(instance => {
+    return instance.setVoting(topicNames, web3.toWei(pricePerToken, 'ether'), {
+      from: account,
+      gas: 4712388,
+      gasPrice: 100000000000
+    });
+  }).then(result => {
+    console.log('project %s is setup for voting', address)
+  }).catch(err => console.error(err))
+}
+
+function buy(address, numtokens) {
+  let price;
+  return ProjectContract.at(address).then(instance => {
+    instance.tokenPrice().then(function (v) {
+      price = numtokens * parseFloat(web3.fromWei(v.toString()));
+      //console.log(price)
+    })
+    return instance.buy({
+      from: account,
+      gas: 4712388,
+      gasPrice: 100000000000,
+      value: web3.toWei(price, 'ether')
+    }).then(v => {
+      // TODO: IT SHOULD GET NO OF TOKENS BOUGHT, BUT RESPONSE IS UNDEFINED.
+      console.log(v[0])
+    })
+  }).then(result => {
+    web3.eth.getBalance(account, function (error, result2) {
+      console.log(web3.fromWei(result2.toString()) + " Ether")
+      return result2
+    })
+  }).catch(err => console.error(err))
+}
+
+function voteForTopic(address, topic, tokens) {
+  return ProjectContract.at(address).then(instance => {
+    return instance.voteForTopic(topic, parseInt(tokens), {
+      from: account,
+      gas: 4712388,
+      gasPrice: 100000000000
+    });
+  }).then(result => {
+    // TODO: ERROR HERE, IF SOLVED, COMMENTED CODE BELOW WILL WORK
+    console.log('voting done');
+    /*
+      ProjectContract.at(address).then(instance => {
+        instance.totalVotesFor(topic, {
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000
+      }).then(result2 => {
+        console.log('Votes for ' + topic + ': %s', result2.toString())
+        return result2
+      }).catch(err => console.error(err))
+    }).catch(err => console.error(err))
+    */
+  }).catch(err => console.error(err))
+}
+
+function allTopics(address) {
+  return ProjectContract.at(address).then(instance => {
+    return instance.allTopics({
+      from: account,
+      gas: 4712388,
+      gasPrice: 100000000000
+    });
+  }).then(result => {
+    for (let i = 0; i < result.length; i++) {
+      console.log('%s', web3.toUtf8(result[i]))
+    }
+    return result
+  }).catch(err => console.error(err))
+}
+
+function totalVotesFor(address) {
+  return ProjectContract.at(address).then(instance => {
+    return instance.allTopics({
+      from: account,
+      gas: 4712388,
+      gasPrice: 100000000000
+    });
+  }).then(result => {
+    for (let i = 0; i < result.length; i++) {
+      ProjectContract.at(address).then(instance => {
+        instance.totalVotesFor(result[i], {
+          from: account,
+          gas: 4712388,
+          gasPrice: 100000000000
+        }).then(result2 => {
+          console.log('Votes for ' + web3.toUtf8(result[i]) + ': %s', result2.toString())
+          return result2
+        }).catch(err => console.error(err))
+      })
+    }
+  }).catch(err => console.error(err))
+}
+
+function voterDetails(address) {
+  return ProjectContract.at(address).then(instance => {
+    instance.voterDetails(address).then(result => {
+      console.log("Total Tokens bought: " + result[0].toString());
+      /*
+      console.log(result[1].length);
+      for (let i = 0; i < result[1].length; i++) {
+        console.log('Votes used: %s', web3.toUtf8(result[1][i]))
+      }
+      return result
+      */
+    })
+  }).catch(err => console.error(err))
+}
+
+function tokenDetails(address) {
+  return ProjectContract.at(address).then(instance => {
+    instance.totalTokens().then(function (v) {
+      console.log("Total Tokens: %s", v.toString())
+    })
+    instance.tokensSold.call().then(function (v) {
+      console.log("Tokens Sold: %s", v.toString())
+    })
+    instance.tokenPrice().then(function (v) {
+      console.log("Price per Token: %s", parseFloat(web3.fromWei(v.toString())))
+    })
+  }).catch(err => console.error(err))
+}
+
 //  node cli.js create "Test title" "My description" 1000000 "2017-06-30T15:00:00"
 commander.command('create')
   .description('adds a new project')
@@ -156,6 +285,62 @@ commander.command('remove')
   .arguments('[address]')
   .action(address => {
     remove(address)
+  })
+
+// node cli.js setvoting 0x....0 "0.1" 'Topic A' 'Topic B' 'Topic C'
+commander.command('setvoting')
+  .description('sets voting functionality')
+  .arguments('[address] [pricePerToken] [topicNames...]')
+  .action((address, pricePerToken, topicNames) => {
+    setVoting(address, pricePerToken, topicNames)
+  })
+
+// node cli.js buytokens 0x....0 5
+commander.command('buytokens')
+  .description('buy tokens')
+  .arguments('[address] [numtokens]')
+  .action((address, numtokens) => {
+    buy(address, numtokens)
+  })
+
+// node cli.js vote 0x....0 'Topic A' 5
+commander.command('vote')
+  .description('vote for a topic')
+  .arguments('[address] [topic] [tokens]')
+  .action((address, topic, tokens) => {
+    voteForTopic(address, topic, tokens)
+  })
+
+// node cli.js topiclist 0x....0
+commander.command('topiclist')
+  .description('get list of all topics')
+  .arguments('[address]')
+  .action((address) => {
+    allTopics(address)
+  })
+
+// node cli.js votesfortopics 0x....0
+commander.command('votesfortopics')
+  .description('get vote information for all topics')
+  .arguments('[address]')
+  .action((address) => {
+    totalVotesFor(address)
+  })
+
+// node cli.js voterdetails 0x....0
+commander.command('voterdetails')
+  .description('get voter information')
+  .arguments('[address]')
+  .action((address) => {
+    voterDetails(address)
+  })  
+
+// node cli.js tokendetails 0x....0
+commander.command('tokendetails')
+  .description('get voter information')
+  .arguments('[address]')
+  .action((address) => {
+    tokenDetails(address)
   })
 
 commander.parse(process.argv)

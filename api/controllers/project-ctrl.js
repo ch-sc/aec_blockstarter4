@@ -3,7 +3,7 @@ const fs = require('fs');
 const Web3 = require('web3');
 const TruffleContract = require('truffle-contract');
 
-const store = require('../lib/store')
+const MappingCtrl = require('./mapping-ctrl')
 
 const provider = new Web3.providers.HttpProvider('http://localhost:8545');
 const web3 = new Web3(provider);
@@ -17,50 +17,60 @@ class ProjectCtrl {
   constructor() {}
 
   get(options, callback) {
-    const tasks = [];
-    store.getProjects(options.userAddr).forEach(entry => {
-      tasks.push(callback => {
-        let address;
-        ProjectContract.at(entry.projAddr)
-          .then(instance => {
-            address = instance.address
-            return instance.getProjectInfo()
+    new MappingCtrl().getProjectAddresses(options)
+      .then(addresses => {
+        const tasks = [];
+        addresses.forEach(address => {
+          tasks.push(callback => {
+            ProjectContract.at(address)
+              .then(instance => {
+                return instance.getProjectInfo()
+              })
+              .then(result => {
+                callback(null, this._formatProjectInfo(address, result))
+              })
+              .catch(callback)
           })
-          .then(result => {
-            callback(null, this._formatProjectInfo(address, result))
-          })
-          .catch(callback)
+        })
+        async.parallel(tasks, callback)
       })
-    })
-    async.parallel(tasks, callback)
+      .catch(callback)
   }
 
   create(from, options, callback) {
     from = from || web3.eth.accounts[0];
-    let projAddr;
-    ProjectContract.new({
+    let proj;
+    ProjectContract
+      .new({
         from: from,
         gas: 4712388,
         gasPrice: 100000000000
-      }).then(instance => {
-        projAddr = instance.address;
-        store.addProject(projAddr, from)
+      })
+      .then(instance => {
+        proj = instance;
         return instance.set(options.title, options.description, options.fundingGoal, Date.parse(options.fundingEnd), {
           from: from,
           gas: 4712388,
           gasPrice: 100000000000
         })
-      }).then(() => {
-        return ProjectContract.at(projAddr)
-          .then(instance => instance.getProjectInfo())
-          .then(result => callback(null, this._formatProjectInfo(projAddr, result)))
-          .catch(callback)
+      })
+      .then(() => {
+        return new MappingCtrl().addProjectMapping({
+          projectAddr: proj.address,
+          creatorAddr: from
+        })
+      })
+      .then(() => {
+        return proj.getProjectInfo()
+      })
+      .then(result => {
+        callback(null, this._formatProjectInfo(proj.address, result))
       })
       .catch(callback);
   }
-  
+
   update(from, projAddr, properties, callback) {
-    let proj, address;
+    let proj
     let options = {
       from: from,
       gas: 4712388,
@@ -69,7 +79,6 @@ class ProjectCtrl {
     ProjectContract.at(projAddr)
       .then(instance => {
         proj = instance;
-        address = instance.address;
         if (properties.title) {
           return proj.setTitle(properties.title, options)
         }
@@ -100,15 +109,14 @@ class ProjectCtrl {
         return proj;
       })
       .then(() => {
-        address = proj.address
         return proj.getProjectInfo()
       })
       .then(result => {
-        callback(null, this._formatProjectInfo(address, result))
+        callback(null, this._formatProjectInfo(proj.address, result))
       })
-      .catch(callback);      
+      .catch(callback);
   }
-  
+
   delete(options, callback) {
     ProjectContract.at(options.projAddr).then(instance => {
         return instance.remove({
@@ -117,10 +125,45 @@ class ProjectCtrl {
           gasPrice: 100000000000
         });
       })
-      .then(result => callback(null, result))
-      .catch(callback);    
+      .then(() => {
+        return new MappingCtrl().deleteProjectMapping({
+          projectAddr: options.projAddr,
+          from: options.from
+        })
+      })
+      .then(() => callback())
+      .catch(callback);
   }
   
+  
+  fund(options, callback) {
+    let proj;
+    ProjectContract.at(options.projAddr)
+      .then(instance => {
+        proj = instance;
+        return instance.fund({
+          from: options.userAddr,
+          gas: 4712388,
+          gasPrice: 100000000000,
+          value: options.funding
+        });
+      })
+      .then(() => {
+        return new MappingCtrl().addBackerMapping({
+          projectAddr: options.projAddr,
+          backerAddr: options.userAddr
+        })
+      })
+      .then(() => {
+        return proj.getProjectInfo()
+      })
+      .then(result => {
+        callback(null, this._formatProjectInfo(proj.address, result))
+      })
+      .then(result => callback(null, result))
+      .catch(callback)
+  }
+
   _formatProjectInfo(address, result) {
     let i = 0
     return {

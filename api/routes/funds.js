@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const FundCtrl = require('../controllers/funds-ctrl')
+const ProjectCtrl = require('../controllers/project-ctrl')
 
 /**
  * POST /funds
@@ -10,8 +10,7 @@ const FundCtrl = require('../controllers/funds-ctrl')
  * returns the current funding status of the project if successful
  */
 router.post('/', function (req, res, next) {
-  // TODO
-  new FundCtrl().doFund({
+  new ProjectCtrl().fund({
     userAddr: req.body.userAddr,
     projAddr: req.body.projAddr,
     funding: req.body.funding
