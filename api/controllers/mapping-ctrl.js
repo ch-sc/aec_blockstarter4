@@ -7,18 +7,18 @@ class MappingCtrl {
 
   getProjectAddresses(options) {
     options = Object.assign({
-      creatorAddress: null,
-      backerAddress: null
+      creatorAddr: null,
+      backerAddr: null
     }, options || {})
     return new Promise(function(resolve, reject) {
       let inst
       ProjectMappingInstance
         .then(instance => {
           inst = instance
-          if (options.creatorAddress) {
-            return instance.getProjectCountByCreator(options.creatorAddress)
-          } else if (options.backerAddress) {
-            return instance.getProjectCountByBacker(options.backerAddress)
+          if (options.creatorAddr) {
+            return instance.getProjectCountByCreator(options.creatorAddr)
+          } else if (options.backerAddr) {
+            return instance.getProjectCountByBacker(options.backerAddr)
           }
           return instance.getProjectCount()
         })
@@ -27,10 +27,10 @@ class MappingCtrl {
           for (let i = 0; i < count; i++) {
             tasks.push(callback => {
               let promise
-              if (options.creatorAddress) {
-                promise = inst.getProjectAddressByCreatorAtIndex(options.creatorAddress, i)
-              } else if (options.backerAddress) {
-                promise = inst.getProjectAddressByBackerAtIndex(options.backerAddress, i)
+              if (options.creatorAddr) {
+                promise = inst.getProjectAddressByCreatorAtIndex(options.creatorAddr, i)
+              } else if (options.backerAddr) {
+                promise = inst.getProjectAddressByBackerAtIndex(options.backerAddr, i)
               } else {
                 promise = inst.getProjectAddressAtIndex(i)
               }
