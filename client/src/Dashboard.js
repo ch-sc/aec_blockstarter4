@@ -39,7 +39,6 @@ export default class Dashboard extends React.Component {
             <Route exact path="/dashboard">
               <Redirect to="/dashboard/projects" />
             </Route>
-            
             <Route exact path='/dashboard/projects' component={AllProjects}/>
             <Route exact path="/dashboard/projects/my" component={MyProjects}/>
             <Route exact path="/dashboard/projects/backed" component={BackedProjects}/>

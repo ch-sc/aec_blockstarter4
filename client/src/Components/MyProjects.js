@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { requestOwnedProjects } from '../Actions/Actions';
 import ProjectCreation from './ProjectCreation';
 import MyProjectEntry from './MyProjectEntry';
-
+import './MyProjects.css';
 import { connect } from 'react-redux';
 
 @connect(
@@ -30,8 +30,10 @@ export default class MyProjects extends React.Component {
     console.log('My personal projects: ', this.props.projects);
 
     return (
-      <div>
-        <h2>My Projects:</h2>        
+      <div >
+        <div>
+        <h2>My Projects:</h2>
+        </div>
         {this.props.projects &&
           this.props.projects.map(proj =>
           <MyProjectEntry project={proj} key={proj.address}/> 
@@ -40,6 +42,7 @@ export default class MyProjects extends React.Component {
           {/*<div key={proj.address}>{proj.title}</div>*/}
         
         <h2>Create new Project:</h2>
+        
 
         <ProjectCreation />
       </div>

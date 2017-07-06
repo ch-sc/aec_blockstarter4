@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createProject } from '../Actions/Actions';
-
+import '../App.css';
 import { connect } from 'react-redux';
 
 @connect(
@@ -80,12 +80,14 @@ export default class ProjectCreationFormular extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.doCreateProject}>
-        <label>
+      <form id="new-form" onSubmit={this.doCreateProject}>
+        <label for="input-field">
           Title:
           <input
             type="text"
+            id="input-field"
             value={this.state.title}
+            className="App"
             onChange={this.updateProjectTitle}
           />
         </label>
@@ -121,7 +123,7 @@ export default class ProjectCreationFormular extends React.Component {
             onChange={this.updateFundingEnd}
           />
         </label>
-        <input type="submit" value="Submit" />
+        <button type="submit">Submit</button>
       </form>
     );
   }
