@@ -17,7 +17,7 @@ class ProjectCtrl {
   constructor() {}
 
   get(options, callback) {
-    new MappingCtrl().getProjectAddresses(options.userAddr)
+    new MappingCtrl().getProjectAddresses(options)
       .then(addresses => {
         const tasks = [];
         addresses.forEach(address => {
@@ -133,6 +133,35 @@ class ProjectCtrl {
       })
       .then(() => callback())
       .catch(callback);
+  }
+  
+  
+  fund(options, callback) {
+    let proj;
+    ProjectContract.at(options.projAddr)
+      .then(instance => {
+        proj = instance;
+        return instance.fund({
+          from: options.userAddr,
+          gas: 4712388,
+          gasPrice: 100000000000,
+          value: options.funding
+        });
+      })
+      .then(() => {
+        return new MappingCtrl().addBackerMapping({
+          projectAddr: options.projAddr,
+          backerAddr: options.userAddr
+        })
+      })
+      .then(() => {
+        return proj.getProjectInfo()
+      })
+      .then(result => {
+        callback(null, this._formatProjectInfo(proj.address, result))
+      })
+      .then(result => callback(null, result))
+      .catch(callback)
   }
 
   _formatProjectInfo(address, result) {

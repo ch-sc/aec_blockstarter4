@@ -3,7 +3,6 @@ const router = express.Router()
 
 const ProjectCtrl = require('../controllers/project-ctrl')
 const UserCtrl = require('../controllers/user-ctrl')
-const FundCtrl = require('../controllers/funds-ctrl')
 
 /**
  * GET /users/
@@ -23,7 +22,7 @@ router.get('/', function (req, res, next) {
  */
 router.get('/:addr/projects', function (req, res, next) {
   new ProjectCtrl().get({
-    userAddr: req.params.addr
+    creatorAddress: req.params.addr
   }, (err, result) => {
     if (err) return next(err)
     res.send(result)
@@ -86,8 +85,10 @@ router.delete('/:userAddr/project/:projAddr', function (req, res, next) {
  * list all the projects that I already backed/funded
  */
 router.get('/:addr/funds', function (req, res, next) {
-  new FundCtrl().getBackerProjects(req.params.addr, (err, result) => {
-    if (err) return next(err);
+  new ProjectCtrl().get({
+    creatorAddress: req.params.addr
+  }, (err, result) => {
+    if (err) return next(err)
     res.send(result)
   })
 });

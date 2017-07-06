@@ -19,7 +19,7 @@ contract ProjectMapping {
   Backer[] backers;
 
   
-  function addProject(address projAddr, address creatorAddr) public {
+  function addProjectMapping(address projAddr, address creatorAddr) public {
     projects.push(Project(projAddr, creatorAddr, false));
   }
   
@@ -92,11 +92,34 @@ contract ProjectMapping {
   }
   
   
-  function addBacker(address backerAddr, address projAddr) public {
+  function addBackerMapping(address projAddr, address backerAddr) public {
     backers.push(Backer(backerAddr, projAddr, false));
   }
   
-  // TODO implement the getters for backers projects
+  function getProjectCountByBacker(address backerAddr) public constant returns (uint) {
+    var count = 0;
+    for (uint i = 0; i < backers.length; i++) {
+      Backer backer = backers[i];
+      if (!backer.deleted && backer.addr == backerAddr) {
+        count++;
+      }
+    }
+    return count;
+  }  
+  
+  
+  function getProjectAddressByBackerAtIndex(address backerAddr, uint index) public constant returns (address) {
+    for (uint i = 0; i <= index; i++) {
+      Backer backer = backers[index];
+      if (backer.deleted || backer.addr != backerAddr) {
+        index++;
+      }
+      if (i == index) {
+        return backer.projAddr;
+      }
+    }
+    return address(0);
+  }
   
   
   function removeBacker(address backerAddr) public {
