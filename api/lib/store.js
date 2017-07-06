@@ -4,6 +4,26 @@ class Store {
     this.projects = {}
   }
 
+  getInvestment(projAddr){
+    var investments=[];
+    Object.keys(this.projects).map(addr => investments.push(this.projects[addr]));
+    if(projAddr){
+      return investments.filter(investments => {
+        return investments.projectAddr;
+      })
+    }
+  }
+
+
+  addInvestement(projAddr, backrAddr, creatorAddr){
+    this.projects[projAddr]=({
+      projAddr: projAddr,
+      backer: backrAddr,
+      creator: creatorAddr
+    })
+
+
+  }
   addProject(projAddr, userAddr) {
     this.projects[projAddr] = ({
       projAddr: projAddr,
