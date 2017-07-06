@@ -1,44 +1,78 @@
 pragma solidity ^0.4.11;
 
-import "../lib/strings.sol";
-
 contract ProjectMapping {
-  
-  using strings for *;
   
   struct Project {
       address addr;
       address creatorAddr;
+      bool deleted;
   }
   
   struct Backer {
     address addr;
     address projAddr;
+    bool deleted;
   }
   
   address creator;
   Project[] projects;
   Backer[] backers;
-  
+
   
   function addProject(address projAddr, address creatorAddr) public {
-    projects.push(Project(projAddr, creatorAddr));
+    projects.push(Project(projAddr, creatorAddr, false));
   }
   
   
-  function getProjects(address creatorAddr) public constant returns (string) {
-    var addresses = "";
+  function getProjectCount() public constant returns (uint) {
+    var count = 0;
     for (uint i = 0; i < projects.length; i++) {
       Project project = projects[i];
-      if (creatorAddr != address(0) && project.creatorAddr != creatorAddr) {
-        continue;
+      if (!project.deleted) {
+        count++;
       }
-      if (i > 0) {
-        addresses.toSlice().concat(",".toSlice());
-      }
-      addresses.toSlice().concat(addressToString(project.addr).toSlice());
     }
-    return string(addresses);
+    return count;
+  }  
+  
+  
+  function getProjectAddressAtIndex(uint index) public constant returns (address) {
+    for (uint i = 0; i <= index; i++) {
+      Project project = projects[index];
+      if (project.deleted) {
+        index++;
+      }
+      if (i == index) {
+        return project.addr;
+      }
+    }
+    return address(0);
+  }
+  
+  
+  function getProjectCountByCreator(address creatorAddr) public constant returns (uint) {
+    var count = 0;
+    for (uint i = 0; i < projects.length; i++) {
+      Project project = projects[i];
+      if (!project.deleted && project.creatorAddr == creatorAddr) {
+        count++;
+      }
+    }
+    return count;
+  }  
+  
+  
+  function getProjectAddressByCreatorAtIndex(address creatorAddr, uint index) public constant returns (address) {
+    for (uint i = 0; i <= index; i++) {
+      Project project = projects[index];
+      if (project.deleted || project.creatorAddr != creatorAddr) {
+        index++;
+      }
+      if (i == index) {
+        return project.addr;
+      }
+    }
+    return address(0);
   }
   
   
@@ -46,55 +80,32 @@ contract ProjectMapping {
     for (uint i = 0; i < projects.length; i++) {
       Project project = projects[i]; 
       if (project.addr == projAddr) {
-        delete projects[i];
+        project.deleted = true;
       }
     }
     for (uint y = 0; y < backers.length; y++) {
       Backer backer = backers[y];
       if (backer.projAddr == projAddr) {      
-        delete backers[y];
+        backer.deleted = true;
       }
     }
   }
   
   
   function addBacker(address backerAddr, address projAddr) public {
-    backers.push(Backer(backerAddr, projAddr));
+    backers.push(Backer(backerAddr, projAddr, false));
   }
   
-  
-  function getProjectsByBacker(address backerAddr) public constant returns (string) {
-    var addresses = "";
-    for (uint i = 0; i < backers.length; i++) {
-      Backer backer = backers[i];
-      if (backer.addr != backerAddr) {
-        continue;
-      }
-      if (i > 0) {
-        addresses.toSlice().concat(",".toSlice());
-      }
-      addresses.toSlice().concat(addressToString(backer.projAddr).toSlice());
-    }
-    return string(addresses);
-  }
+  // TODO implement the getters for backers projects
   
   
   function removeBacker(address backerAddr) public {
     for (uint i = 0; i < backers.length; i++) {
       Backer backer = backers[i];      
       if (backer.addr == backerAddr) {      
-        delete backers[i];
+        backer.deleted = true;
       }
     }
-  }
-
-
-  function addressToString(address x) returns (string) {
-    bytes memory b = new bytes(20);
-    for (uint i = 0; i < 20; i++) {
-      b[i] = byte(uint8(uint(x) / (2**(8*(19 - i)))));
-    }
-    return string(b);
   }
 
 
