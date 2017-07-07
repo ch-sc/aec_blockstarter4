@@ -179,14 +179,14 @@ contract Project {
 		tokenPrice = pricePerToken;
   }
 
-  function totalVotesFor(bytes32 topic) constant returns (uint) {
+  function totalVotesFor(bytes32 topic) public constant returns (uint) {
 		return votesReceived[topic];
   }
 
   /*
 	Instead of just taking the topic name as an argument, we also require the no. of tokens this voter wants to vote for the topic.
 	*/
-  function voteForTopic(bytes32 topic, uint votesInTokens) {
+  function voteForTopic(bytes32 topic, uint votesInTokens) public payable {
 		uint index = indexOfTopic(topic);
     if (index == uint(-1)) throw;
 
@@ -253,7 +253,7 @@ contract Project {
 		account.transfer(this.balance);
   }
 
-  function allTopics() constant returns (bytes32[]) {
+  function allTopics() public constant returns (bytes32[]) {
     return topicList;
   }
 

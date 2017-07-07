@@ -14,52 +14,53 @@ ProjectContract.setProvider(provider)
 
 function createNewProject(title, description, projectStart, projectEnd, fundingGoal, fundingStart, fundingEnd) {
   let address
-  return ProjectContract.new({
-    from: account,
-    gas: 4712388,
-    gasPrice: 100000000000
-  }).then(instance => {
-    address = instance.address
-    return instance.set(title, description, projectStart, projectEnd, fundingGoal, fundingStart, fundingEnd, {
+  ProjectContract
+    .new({
       from: account,
       gas: 4712388,
       gasPrice: 100000000000
     })
-  }).then(result => {
-    console.log(address)
-  }).catch(err => console.error(err))
+    .then(instance => {
+      address = instance.address
+      return instance.set(title, description, projectStart, projectEnd, fundingGoal, fundingStart, fundingEnd, {
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000
+      })
+    }).then(result => {
+      console.log(address)
+    }).catch(err => console.error(err))
 }
 
 function getFundingStatus(address) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.getFundingStatus();
-  }).then(result => {
-    console.log(result[0])
-    return result
-  }).catch(err => {
-    console.error(err)
-  })
+  ProjectContract.at(address)
+    .then(instance => {
+      return instance.getFundingStatus();
+    }).then(result => {
+      console.log(result[0])
+      return result
+    }).catch(err => console.error(err))
 }
 
 function getProjectInfo(address) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.getProjectInfo();
-  }).then(result => {
-    let i = 0
-    console.log('creator:', result[i++])
-    console.log('title:', result[i++].toString())
-    console.log('description:', result[i++].toString())
-    console.log('fundingAmount:', result[i++].toNumber())
-    console.log('fundingGoal:', result[i++].toNumber())
-    console.log('fundingStart:', result[i++].toNumber())
-    console.log('fundingEnd:', result[i++].toNumber())
-    console.log('fundings count:', result[i++].toNumber())
-    console.log('shares count:', result[i++].toNumber())
-    console.log('balance:', result[i++].toNumber())
-    return result
-  }).catch(err => {
-    console.error(err)
-  })
+  ProjectContract.at(address)
+    .then(instance => {
+      return instance.getProjectInfo();
+    }).then(result => {
+      let i = 0
+      console.log('creator:', result[i++])
+      console.log('title:', result[i++].toString())
+      console.log('description:', result[i++].toString())
+      console.log('fundingAmount:', result[i++].toNumber())
+      console.log('fundingGoal:', result[i++].toNumber())
+      console.log('fundingStart:', result[i++].toNumber())
+      console.log('fundingEnd:', result[i++].toNumber())
+      console.log('fundings count:', result[i++].toNumber())
+      console.log('shares count:', result[i++].toNumber())
+      console.log('balance:', result[i++].toNumber())
+      return result
+    })
+    .catch(err => console.error(err))
 }
 
 function randomFund(address) {
@@ -68,57 +69,67 @@ function randomFund(address) {
   }
   const account = web3.eth.accounts[getRandomInt(0, 9)]
   const balanceBefore = web3.eth.getBalance(account).toNumber()
-  return ProjectContract.at(address).then(instance => {
-    return instance.fund({
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000,
-      value: getRandomInt(10000, 20000)
-    });
-  }).then(result => {
-    const balanceAfter = web3.eth.getBalance(account).toNumber()
-    console.log('randomFund:', balanceBefore - balanceAfter)
-    return result
-  }).catch(err => console.error(err))
+  ProjectContract.at(address)
+    .then(instance => {
+      return instance.fund({
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000,
+        value: getRandomInt(10000, 20000)
+      });
+    })
+    .then(result => {
+      const balanceAfter = web3.eth.getBalance(account).toNumber()
+      console.log('randomFund:', balanceBefore - balanceAfter)
+      return result
+    })
+    .catch(err => console.error(err))
 }
 
 function withdrawProject(address) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.withdraw({
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000
-    });
-  }).then(result => {
-    console.log('project %s withdrawed', address)
-    return result
-  }).catch(err => console.error(err))
+  ProjectContract.at(address)
+    .then(instance => {
+      return instance.withdraw({
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000
+      });
+    })
+    .then(result => {
+      console.log('project %s withdrawed', address)
+      return result
+    })
+    .catch(err => console.error(err))
 }
 
 function remove(address) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.remove({
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000
-    });
-  }).then(result => {
-    console.log('project %s removed', address)
-    return result
-  }).catch(err => console.error(err))
+  ProjectContract.at(address).then(instance => {
+      return instance.remove({
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000
+      });
+    })
+    .then(result => {
+      console.log('project %s removed', address)
+    })
+    .catch(err => console.error(err))
 }
 
 // Voting functions
 function setVoting(address, pricePerToken, topicNames) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.setVoting(topicNames, web3.toWei(pricePerToken, 'ether'), {
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000
-    });
-  }).then(result => {
-    console.log('project %s is setup for voting', address)
-  }).catch(err => console.error(err))
+  ProjectContract.at(address)
+    .then(instance => {
+      return instance.setVoting(topicNames, web3.toWei(pricePerToken, 'ether'), {
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000
+      });
+    })
+    .then(result => {
+      console.log('project %s is setup for voting', address)
+    })
+    .catch(err => console.error(err))
 }
 
 function buyTokens(address, numtokens) {
@@ -144,101 +155,95 @@ function buyTokens(address, numtokens) {
       web3.eth.getBalance(account, function(error, balance) {
         console.log("Bought " + numtokens + " token(s)")
         console.log("Balance: " + web3.fromWei(balance.toString()) + " Ether")
-      })      
+      })
     })
     .catch(err => console.error(err))
 }
 
 function voteForTopic(address, topic, tokens) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.voteForTopic(topic, parseInt(tokens), {
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000
-    });
-  }).then(result => {
-    // TODO: ERROR HERE, IF SOLVED, COMMENTED CODE BELOW WILL WORK
-    console.log('voting done');
-    /*
-      ProjectContract.at(address).then(instance => {
-        instance.totalVotesFor(topic, {
+  let projInstance
+  ProjectContract.at(address)
+    .then(instance => {
+      projInstance = instance
+      return instance.voteForTopic(topic, parseInt(tokens), {
         from: account,
         gas: 4712388,
         gasPrice: 100000000000
-      }).then(result2 => {
-        console.log('Votes for ' + topic + ': %s', result2.toString())
-        return result2
-      }).catch(err => console.error(err))
-    }).catch(err => console.error(err))
-    */
-  }).catch(err => console.error(err))
+      });
+    })
+    .then(result => {
+      // TODO: Sometimes throwing errors. Why?
+      return projInstance.totalVotesFor(topic, {
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000
+      })
+    })
+    .then(result => {
+      console.log('Votes for ' + topic + ': %s', result.toString())
+    })
+    .catch(err => console.error(err))
 }
 
 function allTopics(address) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.allTopics({
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000
-    });
-  }).then(result => {
-    for (let i = 0; i < result.length; i++) {
-      console.log('%s', web3.toUtf8(result[i]))
-    }
-    return result
-  }).catch(err => console.error(err))
+  ProjectContract.at(address)
+    .then(instance => {
+      return instance.allTopics();
+    })
+    .then(result => {
+      for (let i = 0; i < result.length; i++) {
+        console.log('%s', web3.toUtf8(result[i]))
+      }
+      return result
+    })
+    .catch(err => console.error(err))
 }
 
 function totalVotesFor(address) {
-  return ProjectContract.at(address).then(instance => {
-    return instance.allTopics({
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000
-    });
-  }).then(result => {
-    for (let i = 0; i < result.length; i++) {
-      ProjectContract.at(address).then(instance => {
-        instance.totalVotesFor(result[i], {
-          from: account,
-          gas: 4712388,
-          gasPrice: 100000000000
-        }).then(result2 => {
-          console.log('Votes for ' + web3.toUtf8(result[i]) + ': %s', result2.toString())
-          return result2
-        }).catch(err => console.error(err))
-      })
-    }
-  }).catch(err => console.error(err))
+  let projInstance
+  ProjectContract.at(address)
+    .then(instance => {
+      projInstance = instance
+      return instance.allTopics();
+    })
+    .then(result => {
+      for (let i = 0; i < result.length; i++) {
+        projInstance.totalVotesFor(result[i])
+          .then(result2 => {
+            console.log('Votes for ' + web3.toUtf8(result[i]) + ': %s', result2.toString())
+            return result2
+          })
+          .catch(err => console.error(err))
+      }
+    })
+    .catch(err => console.error(err))
 }
 
 function voterDetails(address) {
-  return ProjectContract.at(address).then(instance => {
-    instance.voterDetails(address).then(result => {
-      console.log("Total Tokens bought: " + result[0].toString());
-      /*
-      console.log(result[1].length);
-      for (let i = 0; i < result[1].length; i++) {
-        console.log('Votes used: %s', web3.toUtf8(result[1][i]))
-      }
-      return result
-      */
+  ProjectContract.at(address)
+    .then(instance => {
+      return instance.voterDetails(address)
     })
-  }).catch(err => console.error(err))
+    .then(result => {
+      console.log("Total Tokens bought: " + result[0].toString());
+    })
+    .catch(err => console.error(err))
 }
 
 function tokenDetails(address) {
-  return ProjectContract.at(address).then(instance => {
-    instance.totalTokens().then(function(v) {
-      console.log("Total Tokens: %s", v.toString())
+  ProjectContract.at(address)
+    .then(instance => {
+      instance.totalTokens().then(function(v) {
+        console.log("Total Tokens: %s", v.toString())
+      })
+      instance.tokensSold.call().then(function(v) {
+        console.log("Tokens Sold: %s", v.toString())
+      })
+      instance.tokenPrice().then(function(v) {
+        console.log("Price per Token: %s", parseFloat(web3.fromWei(v.toString())))
+      })
     })
-    instance.tokensSold.call().then(function(v) {
-      console.log("Tokens Sold: %s", v.toString())
-    })
-    instance.tokenPrice().then(function(v) {
-      console.log("Price per Token: %s", parseFloat(web3.fromWei(v.toString())))
-    })
-  }).catch(err => console.error(err))
+    .catch(err => console.error(err))
 }
 
 //  node cli.js create "Test title" "My description" 1000000 "2017-06-30T15:00:00"
