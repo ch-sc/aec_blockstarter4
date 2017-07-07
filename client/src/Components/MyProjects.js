@@ -40,8 +40,8 @@ export default class MyProjects extends React.Component {
           {/*<div key={proj.address}>{proj.title}</div>*/}
         
         <h2>Create new Project:</h2>
-
         <ProjectCreation />
+
       </div>
     );
   }
