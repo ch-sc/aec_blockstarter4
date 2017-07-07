@@ -227,14 +227,14 @@ contract Project {
   /*
 	Function to purchase the tokens. Note the keyword 'payable' below, now our contract can accept Ether from anyone who calls this function.
 	*/
-  function buy() payable returns (uint) {
-    uint tokensToBuy = msg.value / tokenPrice;
+  function buyToken() public payable returns (uint) {
+    var tokensToBuy = msg.value / tokenPrice;
 
     if (tokensToBuy > balanceTokens) throw;
     voterInfo[msg.sender].voterAddress = msg.sender;
     voterInfo[msg.sender].tokensBought += tokensToBuy;
     balanceTokens -= tokensToBuy;
-    return tokensToBuy;
+    return uint(tokensToBuy);
   }
 
   function tokensSold() constant returns (uint) {

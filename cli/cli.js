@@ -2,7 +2,7 @@ const fs = require('fs')
 const commander = require('commander')
 const Web3 = require('web3')
 const TruffleContract = require('truffle-contract')
-  
+
 const provider = new Web3.providers.HttpProvider('http://localhost:8545')
 const web3 = new Web3(provider)
 
@@ -121,28 +121,32 @@ function setVoting(address, pricePerToken, topicNames) {
   }).catch(err => console.error(err))
 }
 
-function buy(address, numtokens) {
-  let price;
-  return ProjectContract.at(address).then(instance => {
-    instance.tokenPrice().then(function (v) {
-      price = numtokens * parseFloat(web3.fromWei(v.toString()));
-      //console.log(price)
+function buyTokens(address, numtokens) {
+  let projInstance;
+  return ProjectContract.at(address)
+    .then(instance => {
+      projInstance = instance
+      return instance.tokenPrice()
     })
-    return instance.buy({
-      from: account,
-      gas: 4712388,
-      gasPrice: 100000000000,
-      value: web3.toWei(price, 'ether')
-    }).then(v => {
-      // TODO: IT SHOULD GET NO OF TOKENS BOUGHT, BUT RESPONSE IS UNDEFINED.
-      console.log(v[0])
+    .then(price => {
+      return numtokens * parseFloat(web3.fromWei(price.toString()));
     })
-  }).then(result => {
-    web3.eth.getBalance(account, function (error, result2) {
-      console.log(web3.fromWei(result2.toString()) + " Ether")
-      return result2
+    .then(price => {
+      return projInstance.buyToken({
+        from: account,
+        gas: 4712388,
+        gasPrice: 100000000000,
+        value: web3.toWei(price, 'ether')
+      })
     })
-  }).catch(err => console.error(err))
+    .then(result => {
+      // TODO result[0] is undefined. Why?
+      web3.eth.getBalance(account, function(error, balance) {
+        console.log("Bought " + numtokens + " token(s)")
+        console.log("Balance: " + web3.fromWei(balance.toString()) + " Ether")
+      })      
+    })
+    .catch(err => console.error(err))
 }
 
 function voteForTopic(address, topic, tokens) {
@@ -225,13 +229,13 @@ function voterDetails(address) {
 
 function tokenDetails(address) {
   return ProjectContract.at(address).then(instance => {
-    instance.totalTokens().then(function (v) {
+    instance.totalTokens().then(function(v) {
       console.log("Total Tokens: %s", v.toString())
     })
-    instance.tokensSold.call().then(function (v) {
+    instance.tokensSold.call().then(function(v) {
       console.log("Tokens Sold: %s", v.toString())
     })
-    instance.tokenPrice().then(function (v) {
+    instance.tokenPrice().then(function(v) {
       console.log("Price per Token: %s", parseFloat(web3.fromWei(v.toString())))
     })
   }).catch(err => console.error(err))
@@ -260,7 +264,7 @@ commander.command('status')
   .action(address => {
     getFundingStatus(address)
   })
-  
+
 //  node cli.js info 0x....0
 commander.command('info')
   .description('debug a project')
@@ -268,7 +272,7 @@ commander.command('info')
   .action(address => {
     getProjectInfo(address)
   })
-  
+
 //  node cli.js fund 0x....0
 commander.command('fund')
   .description('fund a project randomly')
@@ -278,7 +282,7 @@ commander.command('fund')
       randomFund(address)
     }
   })
-  
+
 //  node cli.js remove 0x....0
 commander.command('remove')
   .description('remove a project')
@@ -300,7 +304,7 @@ commander.command('buytokens')
   .description('buy tokens')
   .arguments('[address] [numtokens]')
   .action((address, numtokens) => {
-    buy(address, numtokens)
+    buyTokens(address, numtokens)
   })
 
 // node cli.js vote 0x....0 'Topic A' 5
@@ -333,7 +337,7 @@ commander.command('voterdetails')
   .arguments('[address]')
   .action((address) => {
     voterDetails(address)
-  })  
+  })
 
 // node cli.js tokendetails 0x....0
 commander.command('tokendetails')
