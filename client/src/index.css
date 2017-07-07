@@ -1,13 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700);
 
 body {
-  width: 80%;
+  width: 100%;
   border: 20px solid #bdc3c7;
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 130%;
   padding: 20px;
   margin: 20px auto;
-  max-width: 700px;
+  max-width: 90%;
+}
+
+#menu {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  width: 8em;
+  margin-top: -2.5em;
 }
 
 .post {
@@ -46,15 +54,24 @@ a:link, a:visited {
     background-color: white;
     color: black;
     border: 2px solid #EEEEEE;
-    padding: 10px 20px;
+    padding: 20px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 a:hover, a:active {
     background-color: #bdc3c7;
     color: white;
+}
+
+form {
+    margin:0 auto;
+    padding:20px;
+    background:#F5F5F5;
+    width: 60%;
 }
 
 input {
@@ -74,22 +91,36 @@ input[type=button], input[type=submit], input[type=reset] {
     height: 60px;
     font-size: 120%;
     border-radius: 15px;
+    display: inline-block;
 }
 
 input[type=button]:focus, input[type=submit]:focus, input[type=reset]:focus {
 	 border-radius: 10px, 20px;
 }
 
-input[type=text], input[type=number], input[type=date]  {
+input[type=text] {
     border: 2px solid #bdc3c7;
     border-radius: 4px;
     font-size: 90%;
+    display: inline-block;
+    width:600px;
+    align-self: right;
+}
+
+input[type=number], input[type=date] {
+	border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 90%;
+    display: inline-block;
+    width:550px;
+    padding-left:10px;
 }
 
 input[type=text]:focus, input[type=number]:focus, input[type=date]:focus {
     background-color: #616161;
     border-color: #bdc3c7;
     color: white;
+    display: inline-block;
 }
 
 select {
@@ -100,4 +131,27 @@ select {
     background-color: #f1f1f1;
 }
 
+label{
+position:relative;
+width:50px;
+border:2px solid black;
+margin:0px;
+padding:5px;
+font-family:AR CENA;
+font-size:20px;
+}
+
+/*label {
+	color: #B4886B;
+	font-weight: bold;
+	display: block;
+	width: 85%;
+	float: left;
+  	display: inline-block;
+}
+
+label + input {
+    width: 30%;
+    margin: 0 30% 0 4%;
+}*/
 

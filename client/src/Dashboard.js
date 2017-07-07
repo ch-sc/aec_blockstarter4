@@ -29,8 +29,8 @@ export default class Dashboard extends React.Component {
     let { loggedInUser } = this.props;
 
     if (!isLoggedIn) {
-    
-      return <Redirect to="/login"/>
+    <div className="post">
+      return <Redirect to="/login"/> </div>
     }
     
     return (

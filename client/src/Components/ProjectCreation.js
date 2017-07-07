@@ -81,15 +81,17 @@ export default class ProjectCreationFormular extends React.Component {
   render() {
     return (
       <form onSubmit={this.doCreateProject}>
-        <label class = "qoute">
-          Title:
+      <div class="post">
+        <label>
+         Title: 
           <input
             type="text"
             value={this.state.title}
             onChange={this.updateProjectTitle}
-          />
+          /> 
         </label>
-        <label>
+        <br /> <br />
+        <label> 
           Description:
           <input
             type="text"
@@ -97,6 +99,7 @@ export default class ProjectCreationFormular extends React.Component {
             onChange={this.updateProjectDescription}
           />
         </label>
+        <br /> <br />
         <label>
           Funding goal:
           <input
@@ -105,6 +108,7 @@ export default class ProjectCreationFormular extends React.Component {
             onChange={this.updateFundingGoal}
           />
         </label>
+
         {/*<label>
           Funding start:
           <input
@@ -113,6 +117,7 @@ export default class ProjectCreationFormular extends React.Component {
             onChange={this.updateFundingStart}
           />
         </label>*/}
+        <br /> <br />
         <label>
           Funding deadline:
           <input
@@ -121,7 +126,9 @@ export default class ProjectCreationFormular extends React.Component {
             onChange={this.updateFundingEnd}
           />
         </label>
+        <br />  <br />
         <input type="submit" value="Submit" />
+          </div>
       </form>
     );
   }
