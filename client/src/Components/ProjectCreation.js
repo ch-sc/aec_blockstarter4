@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createProject } from '../Actions/Actions';
-
+import '../index.css';
 import { connect } from 'react-redux';
 
 @connect(
@@ -81,7 +81,7 @@ export default class ProjectCreationFormular extends React.Component {
   render() {
     return (
       <form onSubmit={this.doCreateProject}>
-        <label>
+        <label class = "qoute">
           Title:
           <input
             type="text"

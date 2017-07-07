@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AllProjects from './Components/AllProjects';
 import MyProjects from './Components/MyProjects';
 import BackedProjects from './Components/BackedProjects';
-
+import  './index.css';
 // import BackedProjects from './Components/BackedProjects';
 import { connect } from "react-redux";
 import { Route, HashRouter as Router, Switch, Redirect, Link } from 'react-router-dom';
@@ -29,6 +29,7 @@ export default class Dashboard extends React.Component {
     let { loggedInUser } = this.props;
 
     if (!isLoggedIn) {
+    
       return <Redirect to="/login"/>
     }
     
