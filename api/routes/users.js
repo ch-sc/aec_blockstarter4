@@ -86,7 +86,7 @@ router.delete('/:userAddr/project/:projAddr', function (req, res, next) {
  */
 router.get('/:addr/funds', function (req, res, next) {
   new ProjectCtrl().get({
-    creatorAddr: req.params.addr
+    backerAddr: req.params.addr
   }, (err, result) => {
     if (err) return next(err)
     res.send(result)
