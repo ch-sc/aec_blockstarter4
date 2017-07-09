@@ -12,7 +12,7 @@ contract Project {
     address backer;
   }
 
-	// To store the voter information.
+	/* To store the voter information. */
   struct voter {
 		address voterAddress; // The address of the voter
     uint tokensBought;    // The total no. of tokens this voter owns
@@ -30,11 +30,11 @@ contract Project {
 	uint fundingStart; // timestamp
 	uint fundingEnd = 0; // timestamp
 
-	// For voting functionality.
+	/* For voting functionality.*/
 	mapping (address => voter) public voterInfo;
 	mapping (bytes32 => uint) public votesReceived;
   bytes32[] public topicList;
-	// totalTokens and balanceTokens should be same at start as no voting or buying has been done
+	/* totalTokens and balanceTokens should be same at start as no voting or buying has been done. */
   uint public totalTokens = 1000; // Total no. of tokens available for this election
   uint public balanceTokens = 1000; // Total no. of tokens still available for purchase
   uint public tokenPrice; // Price per token (in wei)
@@ -53,7 +53,7 @@ contract Project {
   }
 
 	function Project() public {
-		// Linking the creator to this project.
+		/* Linking the creator to this project. */
 		creator = msg.sender;
 
 	}
@@ -96,7 +96,7 @@ contract Project {
 				throw;
 			}
 
-			// Decrease the actual funding amount of this project in case something odd happens.
+			/* Decrease the actual funding amount of this project in case something odd happens. */
 			fundingAmount = fundingAmount - funding.fundingAmount;
 		}
 
@@ -118,7 +118,7 @@ contract Project {
 		fund();
 	}
 
-	// Backing the project with the passed amount of Ether (wei). 'msg.value' will be ignored.
+	/* Backing the project with the passed amount of Ether (wei). 'msg.value' will be ignored. */
 	function fund() public payable returns (uint) {
 		if (fundingEnd <= now) {
 			throw;
@@ -173,7 +173,8 @@ contract Project {
 		return(creator);
 	}
 
-	// Voting functions.
+
+	/* Voting functions. */
 	function setVoting(bytes32[] topicNames, uint pricePerToken) {
     topicList = topicNames;
 		tokenPrice = pricePerToken;
@@ -190,25 +191,25 @@ contract Project {
 		uint index = indexOfTopic(topic);
     if (index == uint(-1)) throw;
 
-    // msg.sender gives us the address of the account/voter who is trying to call this function.
+    /* msg.sender gives us the address of the account/voter who is trying to call this function.*/
     if (voterInfo[msg.sender].tokensUsedPerTopic.length == 0) {
     	for(uint i = 0; i < topicList.length; i++) {
           voterInfo[msg.sender].tokensUsedPerTopic.push(0);
       }
     }
 
-    // Make sure this voter has enough tokens to cast the vote.
+    /* Make sure this voter has enough tokens to cast the vote. */
     uint availableTokens = voterInfo[msg.sender].tokensBought - totalTokensUsed(voterInfo[msg.sender].tokensUsedPerTopic);
     if (availableTokens < votesInTokens) throw;
 		votesReceived[topic] += votesInTokens;
 
-    // Store how many tokens were used for this topic.
+    /* Store how many tokens were used for this topic. */
     voterInfo[msg.sender].tokensUsedPerTopic[index] += votesInTokens;
   }
 
-  // Return the sum of all the tokens used by this voter.
+  /* Return the sum of all the tokens used by this voter. */
   function totalTokensUsed(uint[] _tokensUsedPerTopic) private constant returns (uint) {
-		uint totalUsedTokens = 0;
+    uint totalUsedTokens = 0;
     for(uint i = 0; i < _tokensUsedPerTopic.length; i++) {
       totalUsedTokens += _tokensUsedPerTopic[i];
     }
@@ -228,13 +229,12 @@ contract Project {
 	Function to purchase the tokens. Note the keyword 'payable' below, now our contract can accept Ether from anyone who calls this function.
 	*/
   function buyToken() public payable returns (uint) {
-    var tokensToBuy = msg.value / tokenPrice;
-
+		uint tokensToBuy = msg.value / tokenPrice;
     if (tokensToBuy > balanceTokens) throw;
     voterInfo[msg.sender].voterAddress = msg.sender;
     voterInfo[msg.sender].tokensBought += tokensToBuy;
     balanceTokens -= tokensToBuy;
-    return uint(tokensToBuy);
+    return tokensToBuy;
   }
 
   function tokensSold() constant returns (uint) {

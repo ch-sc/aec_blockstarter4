@@ -140,7 +140,7 @@ function buyTokens(address, numtokens) {
       return instance.tokenPrice()
     })
     .then(price => {
-      return numtokens * parseFloat(web3.fromWei(price.toString()));
+      return numtokens * parseFloat(web3.fromWei(price.toString()))
     })
     .then(price => {
       return projInstance.buyToken({
@@ -149,15 +149,15 @@ function buyTokens(address, numtokens) {
         gasPrice: 100000000000,
         value: web3.toWei(price, 'ether')
       })
-    })
-    .then(result => {
-      // TODO result[0] is undefined. Why?
-      web3.eth.getBalance(account, function(error, balance) {
-        console.log("Bought " + numtokens + " token(s)")
-        console.log("Balance: " + web3.fromWei(balance.toString()) + " Ether")
+      .then(result => {
+        //console.log(result);
+        web3.eth.getBalance(account, function (error, balance) {
+          console.log("Bought " + numtokens + " token(s)")
+          console.log("Balance: " + web3.fromWei(balance.toString()) + " Ether")
+        })
       })
+      .catch(err => console.error(err))
     })
-    .catch(err => console.error(err))
 }
 
 function voteForTopic(address, topic, tokens) {
@@ -172,7 +172,6 @@ function voteForTopic(address, topic, tokens) {
       });
     })
     .then(result => {
-      // TODO: Sometimes throwing errors. Why?
       return projInstance.totalVotesFor(topic, {
         from: account,
         gas: 4712388,
@@ -199,7 +198,7 @@ function allTopics(address) {
     .catch(err => console.error(err))
 }
 
-function totalVotesFor(address) {
+function totalVotesForTopics(address) {
   let projInstance
   ProjectContract.at(address)
     .then(instance => {
@@ -225,7 +224,8 @@ function voterDetails(address) {
       return instance.voterDetails(address)
     })
     .then(result => {
-      console.log("Total Tokens bought: " + result[0].toString());
+      //console.log(result)
+      console.log("Tokens Bought: " + result[0].toString())
     })
     .catch(err => console.error(err))
 }
@@ -233,14 +233,17 @@ function voterDetails(address) {
 function tokenDetails(address) {
   ProjectContract.at(address)
     .then(instance => {
-      instance.totalTokens().then(function(v) {
-        console.log("Total Tokens: %s", v.toString())
+      instance.totalTokens().then(function(value) {
+        console.log("Total Tokens: %s", value.toString())
       })
-      instance.tokensSold.call().then(function(v) {
-        console.log("Tokens Sold: %s", v.toString())
+      instance.tokensSold.call().then(function(value) {
+        console.log("Tokens Sold: %s", value.toString())
       })
-      instance.tokenPrice().then(function(v) {
-        console.log("Price per Token: %s", parseFloat(web3.fromWei(v.toString())))
+      instance.balanceTokens().then(function(value) {
+        console.log("Tokens in Balance: %s", value.toString())
+      })
+      instance.tokenPrice().then(function(value) {
+        console.log("Price per Token: %s", parseFloat(web3.fromWei(value.toString())))
       })
     })
     .catch(err => console.error(err))
@@ -296,7 +299,7 @@ commander.command('remove')
     remove(address)
   })
 
-// node cli.js setvoting 0x....0 "0.1" 'Topic A' 'Topic B' 'Topic C'
+// node cli.js setvoting 0x....0 "0.1" "Topic A" "Topic B" "Topic C"
 commander.command('setvoting')
   .description('sets voting functionality')
   .arguments('[address] [pricePerToken] [topicNames...]')
@@ -304,7 +307,7 @@ commander.command('setvoting')
     setVoting(address, pricePerToken, topicNames)
   })
 
-// node cli.js buytokens 0x....0 5
+// node cli.js buytokens 0x....0 25
 commander.command('buytokens')
   .description('buy tokens')
   .arguments('[address] [numtokens]')
@@ -312,7 +315,7 @@ commander.command('buytokens')
     buyTokens(address, numtokens)
   })
 
-// node cli.js vote 0x....0 'Topic A' 5
+// node cli.js vote 0x....0 "Topic A" 10
 commander.command('vote')
   .description('vote for a topic')
   .arguments('[address] [topic] [tokens]')
@@ -333,7 +336,7 @@ commander.command('votesfortopics')
   .description('get vote information for all topics')
   .arguments('[address]')
   .action((address) => {
-    totalVotesFor(address)
+    totalVotesForTopics(address)
   })
 
 // node cli.js voterdetails 0x....0
@@ -346,7 +349,7 @@ commander.command('voterdetails')
 
 // node cli.js tokendetails 0x....0
 commander.command('tokendetails')
-  .description('get voter information')
+  .description('get token information')
   .arguments('[address]')
   .action((address) => {
     tokenDetails(address)
