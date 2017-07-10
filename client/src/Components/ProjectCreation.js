@@ -82,12 +82,10 @@ export default class ProjectCreationFormular extends React.Component {
   render() {
     return (
       <div>
-      <form className="form-vertical">
-  <fieldset>
-   <form onSubmit={this.doCreateProject} className="form-vertical">
+   <form onSubmit={this.doCreateProject} className="form-verticle">
       <fieldset>
       <div>
-        <label className="col-lg-2 control-label">
+        <label>
          Title: 
           <input
           type="text" 
@@ -112,7 +110,7 @@ export default class ProjectCreationFormular extends React.Component {
           />
         </label>
         <br /> <br />
-        <label className="col-lg-2 control-label">
+        <label>
           Funding goal:
           <input
             type="number"
@@ -149,9 +147,8 @@ export default class ProjectCreationFormular extends React.Component {
           </div>
           </fieldset>
       </form>
-  </fieldset>
-</form>
 </div>
     );
   }
 }
+

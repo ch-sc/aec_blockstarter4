@@ -30,18 +30,24 @@ export default class MyProjects extends React.Component {
     console.log('My personal projects: ', this.props.projects);
 
     return (
-      <div className="container">
-        <h2>My Projects:</h2>        
+      <div>
+      < br />
+      <div className="panel panel-primary">
+      <div className="panel-heading">
+      <br />
+        <h3 className="panel-title">My Projects:</h3>  
+        </div>  
+        <div className="panel-body">  
         {this.props.projects &&
           this.props.projects.map(proj =>
           <MyProjectEntry project={proj} key={proj.address}/> 
           
           )}
           {/*<div key={proj.address}>{proj.title}</div>*/}
-        
+          </div>
         <h2>Create new Project:</h2>
         <ProjectCreation />
-
+        </div>
       </div>
     );
   }

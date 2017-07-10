@@ -1,201 +1,48 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700);
 
-/*body {
-  width: 100%;
-  border: 20px solid #bdc3c7;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 130%;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 90%;
-}*/
-
-/*.tab1 {
-  position: fixed;
-  left: 20%;
-  top: 33%;
-  width: 12em;
-  margin-top: -2.5em;
-}
-
-.tab2 {
-  position: fixed;
-  left: 40%;
-  top: 33%;
-  width: 12em;
-  margin-top: -2.5em;
-}
-
-.tab3 {
-  position: fixed;
-  left: 60%;
-  top: 33%;
-  width: 12em;
-  margin-top: -2.5em;
-}*/
-
-/*.post {
-  margin-bottom: 20px;
-}
-
-.date {
-  color: #3498db;
-  letter-spacing: 0.2rem;
-  text-transform: uppercase;
-}
-
-.quote{
-  border-left: 5px solid #bdc3c7;
-  padding-left: 5px;
-}
-
-h2 {
-  font-size: 2.0rem;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-p {
-    text-indent: 20px;
-}
-
-.hr{
-    border: 0;
-    height: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-a:link, a:visited {
-    background-color: white;
-    color: black;
-    border: 2px solid #EEEEEE;
-    padding: 20px 20px;
-    text-align: center;
-    text-decoration: none;
+input[type=text] {
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 90%;
     display: inline-block;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    width:300px;
+    align-self: right;
+    height: 150;
 }
 
-a:hover, a:active {
-    background-color: #bdc3c7;
+input[type=number], input[type=date] {
+  border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 90%;
+    display: inline-block;
+    width:300px;
+    padding-left:10px;
+    height: 150;
+}
+
+input[type=text]:focus, input[type=number]:focus, input[type=date]:focus {
+    background-color: #616161;
+    border-color: #bdc3c7;
     color: white;
+    display: inline-block;
+}
+.fundingStatus {
+  background: blue;
+  width: 12em;
+  color: white;
 }
 
 form {
     margin:0 auto;
-    padding:20px;
-    background:#F5F5F5;
-    width: 60%;
-}
-
-input {
-    width: 85%;
-    height: 30px;
-}
-
-input[type=button], input[type=submit], input[type=reset] {
-    background-color: #9E9E9E;
-    border: none;
-    color: white;
-    padding: 16px 32px;
-    text-decoration: none;
-    margin: 4px 2px;
-    cursor: pointer;
-    width: 30%;
-    height: 60px;
-    font-size: 80%;
-    border-radius: 15px;
-    display: inline-block;
-}
-
-input[type=button]:focus, input[type=submit]:focus, input[type=reset]:focus {
-   border-radius: 10px, 20px;
-}
-
-input[type=text] {
-    border: 2px solid #bdc3c7;
-    border-radius: 4px;
-    font-size: 90%;
-    display: inline-block;
-    width:600px;
-    align-self: right;
-}
-
-input[type=number], input[type=date] {
-  border: 2px solid #bdc3c7;
-    border-radius: 4px;
-    font-size: 90%;
-    display: inline-block;
-    width:550px;
-    padding-left:10px;
-}
-
-input[type=text]:focus, input[type=number]:focus, input[type=date]:focus {
-    background-color: #616161;
-    border-color: #bdc3c7;
-    color: white;
-    display: inline-block;
-}
-
-select {
-    width: 100%;
-    padding: 16px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #f1f1f1;
+    padding:40px;
+    width: 80%;
 }
 
 label{
 position:relative;
-width:50px;
-border:2px solid black;
 margin:0px;
 padding:5px;
 font-family:AR CENA;
 font-size:20px;
-}*/
-
-/*label {
-  color: #B4886B;
-  font-weight: bold;
-  display: block;
-  width: 85%;
-  float: left;
-    display: inline-block;
 }
 
-label + input {
-    width: 30%;
-    margin: 0 30% 0 4%;
-}
-
-*/
-
-input[type=text] {
-    border: 2px solid #bdc3c7;
-    border-radius: 4px;
-    font-size: 90%;
-    display: inline-block;
-    width:300px;
-    align-self: right;
-    height: 150;
-}
-
-input[type=number], input[type=date] {
-  border: 2px solid #bdc3c7;
-    border-radius: 4px;
-    font-size: 90%;
-    display: inline-block;
-    width:300px;
-    padding-left:10px;
-    height: 150;
-}
-
-input[type=text]:focus, input[type=number]:focus, input[type=date]:focus {
-    background-color: #616161;
-    border-color: #bdc3c7;
-    color: white;
-    display: inline-block;
-}

@@ -30,9 +30,13 @@ export default class AllProjects extends React.Component {
     console.log('projects: ', this.props.ownedProjects);
 
     return (
-      <form className="form-verticle">
-      <div className="panel panel-default" >
-        <h2>Projects:</h2>
+       <form className="form-verticle">
+      <br />
+      <div className="panel panel-primary" >
+          <div className="panel-heading">
+        <h3 classname="panel-title">Projects:</h3>
+        </div>
+        <div className="panel-body">
         {!this.props.projects && <p>No projects available yet! :(</p>}
         {this.props.projects &&
           this.props.projects.map(proj =>
@@ -41,8 +45,10 @@ export default class AllProjects extends React.Component {
               <BackableProject project={proj}/>
             </div>
           )}
+          </div>
       </div>
       </form>
     );
   }
 }
+

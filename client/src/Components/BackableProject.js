@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { backProject } from '../Actions/Actions';
-
+import '../index.css';
 import { connect } from 'react-redux';
 
 @connect(
@@ -49,7 +49,7 @@ export default class BackableProject extends React.Component {
   render() {
     return (
       <div>
-        {this.props.project.title} - {this.props.project.fundingAmount} / {this.props.project.fundingGoal}
+      <h3> {this.props.project.title} - {this.props.project.fundingAmount} / {this.props.project.fundingGoal} </h3>
         <form onSubmit={this.doBackProject}>
           <label>
             funding amount:
