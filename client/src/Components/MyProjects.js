@@ -30,7 +30,7 @@ export default class MyProjects extends React.Component {
     console.log('My personal projects: ', this.props.projects);
 
     return (
-      <div>
+      <div className="container">
         <h2>My Projects:</h2>        
         {this.props.projects &&
           this.props.projects.map(proj =>

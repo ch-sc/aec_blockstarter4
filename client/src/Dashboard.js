@@ -29,7 +29,7 @@ export default class Dashboard extends React.Component {
     let { loggedInUser } = this.props;
 
     if (!isLoggedIn) {
-    <div className="post">
+    <div>
       return <Redirect to="/login"/> </div>
     }
     
@@ -38,9 +38,7 @@ export default class Dashboard extends React.Component {
           <Menu/>
           <Switch>
             <Route exact path="/dashboard">
-              <Redirect to="/dashboard/projects" />
             </Route>
-            
             <Route exact path='/dashboard/projects' component={AllProjects}/>
             <Route exact path="/dashboard/projects/my" component={MyProjects}/>
             <Route exact path="/dashboard/projects/backed" component={BackedProjects}/>

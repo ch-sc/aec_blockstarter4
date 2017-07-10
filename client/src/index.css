@@ -1,6 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700);
 
-body {
+/*body {
   width: 100%;
   border: 20px solid #bdc3c7;
   font-family: 'Source Sans Pro', sans-serif;
@@ -8,17 +8,33 @@ body {
   padding: 20px;
   margin: 20px auto;
   max-width: 90%;
-}
+}*/
 
-#menu {
+/*.tab1 {
   position: fixed;
-  right: 0;
-  top: 50%;
-  width: 8em;
+  left: 20%;
+  top: 33%;
+  width: 12em;
   margin-top: -2.5em;
 }
 
-.post {
+.tab2 {
+  position: fixed;
+  left: 40%;
+  top: 33%;
+  width: 12em;
+  margin-top: -2.5em;
+}
+
+.tab3 {
+  position: fixed;
+  left: 60%;
+  top: 33%;
+  width: 12em;
+  margin-top: -2.5em;
+}*/
+
+/*.post {
   margin-bottom: 20px;
 }
 
@@ -89,13 +105,13 @@ input[type=button], input[type=submit], input[type=reset] {
     cursor: pointer;
     width: 30%;
     height: 60px;
-    font-size: 120%;
+    font-size: 80%;
     border-radius: 15px;
     display: inline-block;
 }
 
 input[type=button]:focus, input[type=submit]:focus, input[type=reset]:focus {
-	 border-radius: 10px, 20px;
+   border-radius: 10px, 20px;
 }
 
 input[type=text] {
@@ -108,7 +124,7 @@ input[type=text] {
 }
 
 input[type=number], input[type=date] {
-	border: 2px solid #bdc3c7;
+  border: 2px solid #bdc3c7;
     border-radius: 4px;
     font-size: 90%;
     display: inline-block;
@@ -139,19 +155,47 @@ margin:0px;
 padding:5px;
 font-family:AR CENA;
 font-size:20px;
-}
+}*/
 
 /*label {
-	color: #B4886B;
-	font-weight: bold;
-	display: block;
-	width: 85%;
-	float: left;
-  	display: inline-block;
+  color: #B4886B;
+  font-weight: bold;
+  display: block;
+  width: 85%;
+  float: left;
+    display: inline-block;
 }
 
 label + input {
     width: 30%;
     margin: 0 30% 0 4%;
-}*/
+}
 
+*/
+
+input[type=text] {
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 90%;
+    display: inline-block;
+    width:300px;
+    align-self: right;
+    height: 150;
+}
+
+input[type=number], input[type=date] {
+  border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 90%;
+    display: inline-block;
+    width:300px;
+    padding-left:10px;
+    height: 150;
+}
+
+input[type=text]:focus, input[type=number]:focus, input[type=date]:focus {
+    background-color: #616161;
+    border-color: #bdc3c7;
+    color: white;
+    display: inline-block;
+}

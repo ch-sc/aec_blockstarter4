@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createProject } from '../Actions/Actions';
+import {form, label, button, input } from 'react-bootstrap';
 import '../index.css';
 import { connect } from 'react-redux';
 
@@ -80,11 +81,19 @@ export default class ProjectCreationFormular extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.doCreateProject}>
-      <div class="post">
-        <label>
+      <div>
+      <form className="form-vertical">
+  <fieldset>
+   <form onSubmit={this.doCreateProject} className="form-vertical">
+      <fieldset>
+      <div>
+        <label className="col-lg-2 control-label">
          Title: 
           <input
+          type="text" 
+          className="form-control"
+           aria-describedby="Title"
+           placeholder="Title"
             type="text"
             value={this.state.title}
             onChange={this.updateProjectTitle}
@@ -95,15 +104,22 @@ export default class ProjectCreationFormular extends React.Component {
           Description:
           <input
             type="text"
+            className="form-control"
+           aria-describedby="Description" 
+           placeholder="Description"
             value={this.state.description}
             onChange={this.updateProjectDescription}
           />
         </label>
         <br /> <br />
-        <label>
+        <label className="col-lg-2 control-label">
           Funding goal:
           <input
             type="number"
+            className="form-control"
+           aria-describedby="fundingGoal" 
+           placeholder="fundingGoal"
+           id="inputdefault"
             value={this.state.fundingGoal}
             onChange={this.updateFundingGoal}
           />
@@ -122,14 +138,20 @@ export default class ProjectCreationFormular extends React.Component {
           Funding deadline:
           <input
             type="date"
+            className="form-control"
+           aria-describedby="Date" 
+           placeholder="Date"
             value={this.state.fundingEnd}
             onChange={this.updateFundingEnd}
           />
         </label>
-        <br />  <br />
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit"/>
           </div>
+          </fieldset>
       </form>
+  </fieldset>
+</form>
+</div>
     );
   }
 }

@@ -3,7 +3,8 @@ import UserEntry from './userSelectionEntry';
 import { get } from 'axios';
 import { connect } from "react-redux";
 import { requestUsers } from '../Actions/Actions';
-
+import '../index.css';
+import { container } from 'react-bootstrap';
 @connect(store => {
     return {
         loading: store.userReducer.loading,
@@ -25,10 +26,20 @@ export default class UserList extends React.Component {
     render() {
         let { users } = this.props;
         return (
-            <div>
-                Select a User:
+            <div className="container">
+                    <h3>Select a User:</h3>
+                 
                 {!users && <p>No users available! :(</p>}
-                {users && users.map(user => <UserEntry key={user} item={user} />)}
+                
+                { users && users.map(
+                    user => 
+                    <UserEntry 
+                    key={user} 
+                    item={user} 
+                    />)
+                } 
+               
+                
             </div>
         );
     }
