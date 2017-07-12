@@ -1,21 +1,12 @@
-.App {
+#root {
   text-align: center;
+  margin: 40px 0;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #bdc3c7;
-  padding: 20px;
-  color: white;
-  margin-bottom: 20px;
-}
-
-.App-intro {
-  font-size: large;
+.backable-project form {
+  margin: 0;
+  padding: 0;
+  width: auto;
 }
 
 @keyframes App-logo-spin {

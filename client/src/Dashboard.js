@@ -29,12 +29,11 @@ export default class Dashboard extends React.Component {
     let { loggedInUser } = this.props;
 
     if (!isLoggedIn) {
-    <div>
-      return <Redirect to="/login"/> </div>
+      return <Redirect to="/login"/> 
     }
     
     return (
-        <div>
+        <div className="container-fluid">
           <Menu/>
           <Switch>
             <Route exact path="/dashboard">

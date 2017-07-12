@@ -27,7 +27,8 @@ export default class BackableProject extends React.Component {
     this.setState({ project: this.props.project });
   }
 
-  doBackProject() {
+  doBackProject(e) {
+    e.preventDefault()
     if (this.state.fundingAmount > 0) {
       this.props.backProject(
         this.props.loggedInUser,
@@ -48,19 +49,35 @@ export default class BackableProject extends React.Component {
 
   render() {
     return (
-      <div>
-      <h3> {this.props.project.title} - {this.props.project.fundingAmount} / {this.props.project.fundingGoal} </h3>
-        <form onSubmit={this.doBackProject}>
-          <label>
-            funding amount:
-            <input
-              type="number"
-              value={this.state.fundingAmount}
-              onChange={this.updateFundingAmount}
-            />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
+      <div className="panel panel-info backable-project">
+        <div className="panel-heading">
+          <h3 className="panel-title">{this.props.project.title}</h3>
+        </div>
+        <div className="panel-body">  
+        
+          <div className="text-left pull-left">
+            <b>Funding amount:</b> {this.props.project.fundingAmount}<br />
+            <b>Funding goal:</b> {this.props.project.fundingGoal}
+          </div>        
+          
+          <form className="form-horizontal pull-right" onSubmit={this.doBackProject}>
+            <div className="form-group">
+              <label className="col-sm-2 control-label">
+                Amount:
+              </label>
+              <div className="col-sm-10">
+                <input
+                  className="form-control"
+                  type="number"
+                  value={this.state.fundingAmount}
+                  onChange={this.updateFundingAmount}
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn btn-success pull-right">Fund the project</button>
+          </form>
+          
+        </div>
       </div>
     );
   }

@@ -30,20 +30,22 @@ export default class BackedProjects extends React.Component {
 
     return (
       <div>
-      <br />
-      <div className="panel panel-primary">
-      <div className="panel-heading">
-         <h3 className="panel-title">My Projects:</h3>
-      </div> 
-      <div className="panel-body">
-        {this.props.projects &&
-          this.props.projects.map(proj =>
-            <div key={proj.address}>
-              {proj.title}
-            </div>
-          )}
+        <br />
+        <div className="panel panel-default">
+          <div className="panel-heading">
+             <h3 className="panel-title">My Projects:</h3>
+          </div> 
+          <div className="panel-body text-left">
+            <ul>
+              {this.props.projects &&
+                this.props.projects.map(proj =>
+                  <li key={proj.address}>
+                    {proj.title}
+                  </li>
+                )}
+            </ul>
           </div>
-      </div>
+        </div>
       </div>
     );
   }

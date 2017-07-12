@@ -30,18 +30,18 @@ export default class MyProjectEntry extends React.Component {
 
   render(){
     return (
-      <div>
-        <div className="panel panel-primary">
-              <div className="panel-heading">
-               <h3 className="panel-title">Refund</h3>
-              </div>
-          <div className="panel-body">  
-            <div key={this.props.project.address}>{this.props.project.title} - {this.props.project.fundingAmount} / {this.props.project.fundingGoal}</div>        
-            <div  onClick={this.doDeleteProject}>delete / refund backers</div>
-          </div>
+      <div className="panel panel-info">
+        <div className="panel-heading">
+          <h3 className="panel-title">{this.props.project.title}</h3>
+        </div>
+        <div className="panel-body">  
+          <div className="text-left pull-left">
+            <b>Funding amount:</b> {this.props.project.fundingAmount}<br />
+            <b>Funding goal:</b> {this.props.project.fundingGoal}
+          </div>        
+          <button type="button" className="btn btn-danger pull-right" onClick={this.doDeleteProject}>delete / refund backers</button>
         </div>
       </div>
     )
   }
 }
-

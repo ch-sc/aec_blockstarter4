@@ -24,7 +24,6 @@ export default class ProjectCreationFormular extends React.Component {
     this.updateProjectTitle = this.updateProjectTitle.bind(this);
     this.updateProjectDescription = this.updateProjectDescription.bind(this);
     this.updateFundingGoal = this.updateFundingGoal.bind(this);
-    // this.updateFundingStart = this.updateFundingStart.bind(this);
     this.updateFundingEnd = this.updateFundingEnd.bind(this);
   }
 
@@ -44,8 +43,6 @@ export default class ProjectCreationFormular extends React.Component {
     this.setState({ title: '' });
     this.setState({ description: '' });
     this.setState({ fundingGoal: 0 });
-
-    // this.setState({ fundingStart: initDate });
     this.setState({ fundingEnd: initDate });
   }
 
@@ -54,7 +51,6 @@ export default class ProjectCreationFormular extends React.Component {
       title: this.state.title,
       description: this.state.description,
       fundingGoal: this.state.fundingGoal,
-      // fundingStart: this.state.fundingStart,
       fundingEnd: this.state.fundingEnd
     };
     this.props.createProject(this.props.loggedInUser, proj);
@@ -71,84 +67,86 @@ export default class ProjectCreationFormular extends React.Component {
     this.setState({ fundingGoal: e.target.value });
   }
 
-  // updateFundingStart(e) {
-  //   this.setState({ fundingStart: e.target.value });
-  // }
-
   updateFundingEnd(e) {
     this.setState({ fundingEnd: e.target.value });
   }
 
   render() {
     return (
-      <div>
-   <form onSubmit={this.doCreateProject} className="form-verticle">
-      <fieldset>
-      <div>
-        <label>
-         Title: 
-          <input
-          type="text" 
-          className="form-control"
-           aria-describedby="Title"
-           placeholder="Title"
-            type="text"
-            value={this.state.title}
-            onChange={this.updateProjectTitle}
-          /> 
-        </label>
-        <br /> <br />
-        <label> 
-          Description:
-          <input
-            type="text"
-            className="form-control"
-           aria-describedby="Description" 
-           placeholder="Description"
-            value={this.state.description}
-            onChange={this.updateProjectDescription}
-          />
-        </label>
-        <br /> <br />
-        <label>
-          Funding goal:
-          <input
-            type="number"
-            className="form-control"
-           aria-describedby="fundingGoal" 
-           placeholder="fundingGoal"
-           id="inputdefault"
-            value={this.state.fundingGoal}
-            onChange={this.updateFundingGoal}
-          />
-        </label>
-
-        {/*<label>
-          Funding start:
-          <input
-            type="date"
-            value={this.state.fundingStart}
-            onChange={this.updateFundingStart}
-          />
-        </label>*/}
-        <br /> <br />
-        <label>
-          Funding deadline:
-          <input
-            type="date"
-            className="form-control"
-           aria-describedby="Date" 
-           placeholder="Date"
-            value={this.state.fundingEnd}
-            onChange={this.updateFundingEnd}
-          />
-        </label>
-        <input type="submit" value="Submit"/>
+      <div className="text-left">
+        <h2>Create new Project:</h2>
+        <form onSubmit={this.doCreateProject} className="form-horizontal">
+          
+          <div className="form-group">
+            <label className="col-sm-2 control-label">
+             Title:  
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="text" 
+                className="form-control"
+                aria-describedby="Title"
+                placeholder="Title"
+                type="text"
+                value={this.state.title}
+                onChange={this.updateProjectTitle}
+                />
+            </div>
           </div>
-          </fieldset>
-      </form>
-</div>
+            
+          <div className="form-group">  
+            <label className="col-sm-2 control-label">
+              Description:
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="text"
+                className="form-control"
+                aria-describedby="Description" 
+                placeholder="Description"
+                value={this.state.description}
+                onChange={this.updateProjectDescription}
+                />
+            </div>
+          </div>
+            
+          <div className="form-group">  
+            <label className="col-sm-2 control-label">
+              Funding goal:
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="number"
+                className="form-control"
+                aria-describedby="fundingGoal" 
+                placeholder="fundingGoal"
+                id="inputdefault"
+                value={this.state.fundingGoal}
+                onChange={this.updateFundingGoal}
+                />
+            </div>
+          </div>
+            
+          <div className="form-group">  
+            <label className="col-sm-2 control-label">
+              Funding deadline:
+            </label>
+            <div className="col-sm-10">
+              <input
+                type="date"
+                className="form-control"
+                aria-describedby="Date" 
+                placeholder="Date"
+                value={this.state.fundingEnd}
+                onChange={this.updateFundingEnd}
+                />
+            </div>
+          </div>              
+            
+          <button type="button" className="btn btn-success">Create new Project</button>
+            
+        </form>
+      </div>
     );
   }
 }
-
