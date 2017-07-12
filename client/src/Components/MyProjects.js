@@ -33,7 +33,7 @@ export default class MyProjects extends React.Component {
         < br />
         <div className="panel panel-default">
           <div className="panel-heading">
-            <h3 className="panel-title">My Projects:</h3>  
+            <h3 className="panel-title">My Projects</h3>  
           </div>  
           <div className="panel-body">  
             {this.props.projects &&

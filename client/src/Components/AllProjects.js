@@ -34,7 +34,7 @@ export default class AllProjects extends React.Component {
         <br />
         <div className="panel panel-default" >
           <div className="panel-heading">
-            <h3 className="panel-title">Projects:</h3>
+            <h3 className="panel-title">All projects</h3>
           </div>
           <div className="panel-body">
             {!this.props.projects && <p>No projects available yet! :(</p>}
