@@ -143,7 +143,7 @@ export default class ProjectCreationFormular extends React.Component {
             </div>
           </div>              
             
-          <button type="button" className="btn btn-success">Create new Project</button>
+          <button type="submit" className="btn btn-success">Create new Project</button>
             
         </form>
       </div>
