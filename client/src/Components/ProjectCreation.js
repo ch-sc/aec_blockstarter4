@@ -74,7 +74,7 @@ export default class ProjectCreationFormular extends React.Component {
   render() {
     return (
       <div className="text-left">
-        <h2>Create new Project:</h2>
+        <h2>Add a project</h2>
         <form onSubmit={this.doCreateProject} className="form-horizontal">
           
           <div className="form-group">

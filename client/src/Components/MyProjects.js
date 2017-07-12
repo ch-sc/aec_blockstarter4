@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { requestOwnedProjects } from '../Actions/Actions';
-import ProjectCreation from './ProjectCreation';
 import MyProjectEntry from './MyProjectEntry';
 
 import { connect } from 'react-redux';
@@ -42,7 +41,6 @@ export default class MyProjects extends React.Component {
             }
           </div>
         </div>
-        <ProjectCreation />
       </div>
     );
   }
