@@ -18,9 +18,12 @@ cd api/ && npm install
 ```
 cd client/ && npm install
 ```
+```
+cd cli/ && npm install
+```
 
 
-## Developing
+## Running the application
 
 Start testrpc:
 ```
@@ -41,3 +44,7 @@ Start the client app:
 ```
 cd client/ && npm run dev
 ```
+
+## Testing the voting functionality (extension)
+
+See 'Extension' chapter in the report.
